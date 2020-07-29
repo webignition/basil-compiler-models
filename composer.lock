@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b358880002c49534656eef084262265a",
+    "content-hash": "ddf1c2bd53d1f518f303798a81b3d620",
     "packages": [
         {
             "name": "webignition/basil-models",
-            "version": "0.56",
+            "version": "0.57",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-models.git",
-                "reference": "9fd20dc9953d4e3395d3fbfde1104ca462ecf293"
+                "reference": "67d500daa092590652d3d93c33d8fa70dfd265e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-models/zipball/9fd20dc9953d4e3395d3fbfde1104ca462ecf293",
-                "reference": "9fd20dc9953d4e3395d3fbfde1104ca462ecf293",
+                "url": "https://api.github.com/repos/webignition/basil-models/zipball/67d500daa092590652d3d93c33d8fa70dfd265e2",
+                "reference": "67d500daa092590652d3d93c33d8fa70dfd265e2",
                 "shasum": ""
             },
             "require": {
@@ -28,6 +28,7 @@
                 "phpstan/phpstan": "^0.12",
                 "phpunit/phpunit": "~9.0",
                 "squizlabs/php_codesniffer": "3.*",
+                "symplify/easy-coding-standard": "^8.1",
                 "webignition/object-reflector": "^0.1.0"
             },
             "type": "library",
@@ -47,7 +48,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-models",
-            "time": "2020-06-12T17:04:26+00:00"
+            "time": "2020-07-29T13:22:30+00:00"
         }
     ],
     "packages-dev": [
