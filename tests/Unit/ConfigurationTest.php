@@ -102,16 +102,16 @@ class ConfigurationTest extends TestCase
     /**
      * @dataProvider isValidDataProvider
      */
-    public function testIsValid(
+    public function testValidate(
         ConfigurationInterface $configuration,
-        bool $expectedIsValid,
+        int $expectedValidationState,
         ?callable $initializer = null
     ) {
         if (is_callable($initializer)) {
             $initializer();
         }
 
-        self::assertSame($expectedIsValid, $configuration->isValid());
+        self::assertSame($expectedValidationState, $configuration->validate());
 
         Mockery::close();
     }
@@ -138,7 +138,7 @@ class ConfigurationTest extends TestCase
         return [
             'source not readable' => [
                 'configuration' => new Configuration('unreadable.yml', '', ''),
-                'expectedIsValid' => false,
+                'expectedValidationState' => Configuration::VALIDATION_STATE_SOURCE_NOT_READABLE,
                 'initializer' => function () use ($isReadableMockArguments) {
                     PHPMockery::mock(...$isReadableMockArguments)
                         ->with('unreadable.yml')
@@ -147,7 +147,7 @@ class ConfigurationTest extends TestCase
             ],
             'target not a directory' => [
                 'configuration' => new Configuration('test.yml', 'target.yml', ''),
-                'expectedIsValid' => false,
+                'expectedValidationState' => Configuration::VALIDATION_STATE_TARGET_NOT_DIRECTORY,
                 'initializer' => function () use ($isReadableMockArguments, $isDirMockArguments) {
                     PHPMockery::mock(...$isReadableMockArguments)
                         ->with('test.yml')
@@ -160,7 +160,7 @@ class ConfigurationTest extends TestCase
             ],
             'target not a writable' => [
                 'configuration' => new Configuration('test.yml', 'target', ''),
-                'expectedIsValid' => false,
+                'expectedValidationState' => Configuration::VALIDATION_STATE_TARGET_NOT_WRITABLE,
                 'initializer' => function () use (
                     $isReadableMockArguments,
                     $isDirMockArguments,
@@ -181,7 +181,7 @@ class ConfigurationTest extends TestCase
             ],
             'valid' => [
                 'configuration' => new Configuration('test.yml', 'target', ''),
-                'expectedIsValid' => true,
+                'expectedValidationState' => Configuration::VALIDATION_STATE_VALID,
                 'initializer' => function () use (
                     $isReadableMockArguments,
                     $isDirMockArguments,
