@@ -15,11 +15,7 @@
 
     <testsuites>
         <testsuite name="Default Test Suite">
-            <directory>tests/Unit</directory>
-            <directory>tests/Functional</directory>
-            <directory>tests/Integration/Bin</directory>
-            <exclude>tests/build/</exclude>
-            <exclude>tests/Fixtures/</exclude>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
     <filter>
