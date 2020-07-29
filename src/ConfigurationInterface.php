@@ -15,6 +15,8 @@ interface ConfigurationInterface
      */
     public function getData(): array;
 
+    public function isValid(): bool;
+
     /**
      * @param array<mixed> $data
      *
