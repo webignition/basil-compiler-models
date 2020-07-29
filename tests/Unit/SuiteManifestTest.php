@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilerModels\Tests\Unit;
 
+use Mockery;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilerModels\Configuration;
 use webignition\BasilCompilerModels\ConfigurationInterface;
 use webignition\BasilCompilerModels\SuiteManifest;
 use webignition\BasilCompilerModels\TestManifest;
+use webignition\BasilModels\Test\Configuration as TestConfiguration;
 use webignition\BasilModels\Test\Configuration as TestModelConfiguration;
 
 class SuiteManifestTest extends TestCase
@@ -147,7 +149,7 @@ class SuiteManifestTest extends TestCase
     }
 
     /**
-     * @dataProvider jsonSerializedFromJsonDataProvider
+     * @dataProvider getDataFromArrayDataProvider
      */
     public function testGetDataFromArray(SuiteManifest $output)
     {
@@ -157,7 +159,7 @@ class SuiteManifestTest extends TestCase
         );
     }
 
-    public function jsonSerializedFromJsonDataProvider(): array
+    public function getDataFromArrayDataProvider(): array
     {
         $compilerConfiguration = new Configuration('test.yml', 'build', SuiteManifestTest::class);
         $testConfiguration = new TestModelConfiguration('chrome', 'http://example.com');
@@ -172,6 +174,63 @@ class SuiteManifestTest extends TestCase
                     new TestManifest($testConfiguration, 'test2.yml', 'GeneratedTest2.php'),
                     new TestManifest($testConfiguration, 'test3.yml', 'GeneratedTest3.php'),
                 ]),
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider validateDataProvider
+     */
+    public function testValidate(SuiteManifest $suiteManifest, int $expectedValidationState)
+    {
+        self::assertSame($expectedValidationState, $suiteManifest->validate());
+    }
+
+    public function validateDataProvider(): array
+    {
+        $invalidConfiguration = Mockery::mock(ConfigurationInterface::class);
+        $invalidConfiguration
+            ->shouldReceive('validate')
+            ->andReturn(Configuration::VALIDATION_STATE_SOURCE_NOT_READABLE);
+
+        $validConfiguration = Mockery::mock(ConfigurationInterface::class);
+        $validConfiguration
+            ->shouldReceive('validate')
+            ->andReturn(Configuration::VALIDATION_STATE_VALID);
+
+        return [
+            'configuration invalid' => [
+                'suiteManifest' => new SuiteManifest(
+                    $invalidConfiguration,
+                    []
+                ),
+                'expectedValidationState' => SuiteManifest::VALIDATION_STATE_CONFIGURATION_INVALID,
+            ],
+            'test manifest invalid' => [
+                'suiteManifest' => new SuiteManifest(
+                    $validConfiguration,
+                    [
+                        new TestManifest(
+                            new TestConfiguration('', ''),
+                            '',
+                            ''
+                        ),
+                    ]
+                ),
+                'expectedValidationState' => SuiteManifest::VALIDATION_STATE_TEST_MANIFEST_INVALID,
+            ],
+            'valid' => [
+                'suiteManifest' => new SuiteManifest(
+                    $validConfiguration,
+                    [
+                        new TestManifest(
+                            new TestConfiguration('chrome', 'http:;//example.com'),
+                            'test.yml',
+                            'GeneratedTest.php'
+                        ),
+                    ]
+                ),
+                'expectedValidationState' => suiteManifest::VALIDATION_STATE_VALID,
             ],
         ];
     }

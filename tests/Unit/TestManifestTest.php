@@ -59,4 +59,50 @@ class TestManifestTest extends TestCase
             ])
         );
     }
+
+    /**
+     * @dataProvider validateDataProvider
+     */
+    public function testValidate(TestManifest $testManifest, int $expectedValidationState)
+    {
+        self::assertSame($expectedValidationState, $testManifest->validate());
+    }
+
+    public function validateDataProvider(): array
+    {
+        return [
+            'configuration invalid' => [
+                'testManifest' => new TestManifest(
+                    new TestConfiguration('', ''),
+                    'source',
+                    'target'
+                ),
+                'expectedValidationState' => TestManifest::VALIDATION_STATE_CONFIGURATION_INVALID,
+            ],
+            'source empty' => [
+                'testManifest' => new TestManifest(
+                    new TestConfiguration('chrome', 'http://example.com'),
+                    '',
+                    'target'
+                ),
+                'expectedValidationState' => TestManifest::VALIDATION_STATE_SOURCE_EMPTY,
+            ],
+            'target empty' => [
+                'testManifest' => new TestManifest(
+                    new TestConfiguration('chrome', 'http://example.com'),
+                    'source',
+                    ''
+                ),
+                'expectedValidationState' => TestManifest::VALIDATION_STATE_TARGET_EMPTY,
+            ],
+            'valid' => [
+                'testManifest' => new TestManifest(
+                    new TestConfiguration('chrome', 'http://example.com'),
+                    'source',
+                    'target'
+                ),
+                'expectedValidationState' => TestManifest::VALIDATION_STATE_VALID,
+            ],
+        ];
+    }
 }

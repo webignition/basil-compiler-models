@@ -6,6 +6,10 @@ namespace webignition\BasilCompilerModels;
 
 class SuiteManifest extends AbstractOutput
 {
+    public const VALIDATION_STATE_VALID = 1;
+    public const VALIDATION_STATE_CONFIGURATION_INVALID = 2;
+    public const VALIDATION_STATE_TEST_MANIFEST_INVALID = 3;
+
     /**
      * @var TestManifest[]
      */
@@ -19,7 +23,9 @@ class SuiteManifest extends AbstractOutput
     {
         parent::__construct($configuration);
 
-        $this->testManifests = $manifests;
+        $this->testManifests = array_filter($manifests, function ($item) {
+            return $item instanceof TestManifest;
+        });
     }
 
     /**
@@ -44,6 +50,23 @@ class SuiteManifest extends AbstractOutput
         }
 
         return $testPaths;
+    }
+
+    public function validate(): int
+    {
+        if (Configuration::VALIDATION_STATE_VALID !== $this->getConfiguration()->validate()) {
+            return self::VALIDATION_STATE_CONFIGURATION_INVALID;
+        }
+
+        foreach ($this->testManifests as $testManifest) {
+            if ($testManifest instanceof TestManifest) {
+                if (TestManifest::VALIDATION_STATE_VALID !== $testManifest->validate()) {
+                    return self::VALIDATION_STATE_TEST_MANIFEST_INVALID;
+                }
+            }
+        }
+
+        return self::VALIDATION_STATE_VALID;
     }
 
     /**

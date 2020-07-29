@@ -9,6 +9,11 @@ use webignition\BasilModels\Test\ConfigurationInterface as TestConfigurationInte
 
 class TestManifest
 {
+    public const VALIDATION_STATE_VALID = 1;
+    public const VALIDATION_STATE_CONFIGURATION_INVALID = 2;
+    public const VALIDATION_STATE_SOURCE_EMPTY = 3;
+    public const VALIDATION_STATE_TARGET_EMPTY = 4;
+
     private string $source;
     private string $target;
     private TestConfigurationInterface $configuration;
@@ -23,6 +28,23 @@ class TestManifest
     public function getTarget(): string
     {
         return $this->target;
+    }
+
+    public function validate(): int
+    {
+        if (TestConfigurationInterface::VALIDATION_STATE_VALID !== $this->configuration->validate()) {
+            return self::VALIDATION_STATE_CONFIGURATION_INVALID;
+        }
+
+        if ('' === trim($this->source)) {
+            return self::VALIDATION_STATE_SOURCE_EMPTY;
+        }
+
+        if ('' === trim($this->target)) {
+            return self::VALIDATION_STATE_TARGET_EMPTY;
+        }
+
+        return self::VALIDATION_STATE_VALID;
     }
 
     /**
