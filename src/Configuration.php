@@ -6,6 +6,11 @@ namespace webignition\BasilCompilerModels;
 
 class Configuration implements ConfigurationInterface
 {
+    public const VALIDATION_STATE_VALID = 1;
+    public const VALIDATION_STATE_SOURCE_NOT_READABLE = 2;
+    public const VALIDATION_STATE_TARGET_NOT_DIRECTORY = 3;
+    public const VALIDATION_STATE_TARGET_NOT_WRITABLE = 4;
+
     private string $source;
     private string $target;
     private string $baseClass;
@@ -44,21 +49,21 @@ class Configuration implements ConfigurationInterface
         ];
     }
 
-    public function isValid(): bool
+    public function validate(): int
     {
         if (!is_readable($this->source)) {
-            return false;
+            return self::VALIDATION_STATE_SOURCE_NOT_READABLE;
         }
 
         if (!is_dir($this->target)) {
-            return false;
+            return self::VALIDATION_STATE_TARGET_NOT_DIRECTORY;
         }
 
         if (!is_writable($this->target)) {
-            return false;
+            return self::VALIDATION_STATE_TARGET_NOT_WRITABLE;
         }
 
-        return true;
+        return self::VALIDATION_STATE_VALID;
     }
 
     /**
