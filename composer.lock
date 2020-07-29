@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ddf1c2bd53d1f518f303798a81b3d620",
+    "content-hash": "e35e6caba4d18f6414f189b02ccc396b",
     "packages": [
         {
             "name": "webignition/basil-models",
