@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilerModels\Tests\Unit;
 
+use Mockery;
+use phpmock\mockery\PHPMockery;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilerModels\Configuration;
 use webignition\BasilCompilerModels\ConfigurationInterface;
@@ -93,6 +95,110 @@ class ConfigurationTest extends TestCase
                     'base-class' => self::BASE_CLASS,
                 ],
                 'expectedConfiguration' => new Configuration(self::SOURCE, self::TARGET, self::BASE_CLASS)
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider isValidDataProvider
+     */
+    public function testIsValid(
+        ConfigurationInterface $configuration,
+        bool $expectedIsValid,
+        ?callable $initializer = null
+    ) {
+        if (is_callable($initializer)) {
+            $initializer();
+        }
+
+        self::assertSame($expectedIsValid, $configuration->isValid());
+
+        Mockery::close();
+    }
+
+    public function isValidDataProvider(): array
+    {
+        $mockNamespace = 'webignition\BasilCompilerModels';
+
+        $isReadableMockArguments = [
+            $mockNamespace,
+            'is_readable',
+        ];
+
+        $isDirMockArguments = [
+            $mockNamespace,
+            'is_dir'
+        ];
+
+        $isWritableMockArguments = [
+            $mockNamespace,
+            'is_writable',
+        ];
+
+        return [
+            'source not readable' => [
+                'configuration' => new Configuration('unreadable.yml', '', ''),
+                'expectedIsValid' => false,
+                'initializer' => function () use ($isReadableMockArguments) {
+                    PHPMockery::mock(...$isReadableMockArguments)
+                        ->with('unreadable.yml')
+                        ->andReturnFalse();
+                },
+            ],
+            'target not a directory' => [
+                'configuration' => new Configuration('test.yml', 'target.yml', ''),
+                'expectedIsValid' => false,
+                'initializer' => function () use ($isReadableMockArguments, $isDirMockArguments) {
+                    PHPMockery::mock(...$isReadableMockArguments)
+                        ->with('test.yml')
+                        ->andReturnTrue();
+
+                    PHPMockery::mock(...$isDirMockArguments)
+                        ->with('target.yml')
+                        ->andReturnFalse();
+                },
+            ],
+            'target not a writable' => [
+                'configuration' => new Configuration('test.yml', 'target', ''),
+                'expectedIsValid' => false,
+                'initializer' => function () use (
+                    $isReadableMockArguments,
+                    $isDirMockArguments,
+                    $isWritableMockArguments
+                ) {
+                    PHPMockery::mock(...$isReadableMockArguments)
+                        ->with('test.yml')
+                        ->andReturnTrue();
+
+                    PHPMockery::mock(...$isDirMockArguments)
+                        ->with('target')
+                        ->andReturnTrue();
+
+                    PHPMockery::mock(...$isWritableMockArguments)
+                        ->with('target')
+                        ->andReturnFalse();
+                },
+            ],
+            'valid' => [
+                'configuration' => new Configuration('test.yml', 'target', ''),
+                'expectedIsValid' => true,
+                'initializer' => function () use (
+                    $isReadableMockArguments,
+                    $isDirMockArguments,
+                    $isWritableMockArguments
+                ) {
+                    PHPMockery::mock(...$isReadableMockArguments)
+                        ->with('test.yml')
+                        ->andReturnTrue();
+
+                    PHPMockery::mock(...$isDirMockArguments)
+                        ->with('target')
+                        ->andReturnTrue();
+
+                    PHPMockery::mock(...$isWritableMockArguments)
+                        ->with('target')
+                        ->andReturnTrue();
+                },
             ],
         ];
     }

@@ -44,6 +44,23 @@ class Configuration implements ConfigurationInterface
         ];
     }
 
+    public function isValid(): bool
+    {
+        if (!is_readable($this->source)) {
+            return false;
+        }
+
+        if (!is_dir($this->target)) {
+            return false;
+        }
+
+        if (!is_writable($this->target)) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * @param array<mixed> $data
      *
