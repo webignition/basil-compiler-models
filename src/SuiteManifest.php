@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilerModels;
 
+use webignition\BasilModels\Test\ConfigurationInterface as TestConfigurationInterface;
+
 class SuiteManifest extends AbstractOutput
 {
     public const VALIDATION_STATE_VALID = 1;
@@ -19,13 +21,35 @@ class SuiteManifest extends AbstractOutput
      * @param ConfigurationInterface $configuration
      * @param TestManifest[] $manifests
      */
-    public function __construct(ConfigurationInterface $configuration, array $manifests)
+    public function __construct(ConfigurationInterface $configuration, array $manifests = [])
     {
         parent::__construct($configuration);
 
         $this->testManifests = array_filter($manifests, function ($item) {
             return $item instanceof TestManifest;
         });
+    }
+
+    public function createTestManifest(
+        TestConfigurationInterface $testConfiguration,
+        string $relativeSource,
+        string $relativeTarget
+    ): TestManifest {
+        $suiteConfiguration = $this->getConfiguration();
+        $testManifest = new TestManifest(
+            $testConfiguration,
+            $suiteConfiguration->getSource() . '/' . $relativeSource,
+            $suiteConfiguration->getTarget() . '/' . $relativeTarget
+        );
+
+        $this->add($testManifest);
+
+        return $testManifest;
+    }
+
+    public function add(TestManifest $testManifest): void
+    {
+        $this->testManifests[] = $testManifest;
     }
 
     /**
@@ -41,12 +65,10 @@ class SuiteManifest extends AbstractOutput
      */
     public function getTestPaths(): array
     {
-        $targetDirectory = $this->getConfiguration()->getTarget();
-
         $testPaths = [];
 
         foreach ($this->getTestManifests() as $testManifest) {
-            $testPaths[] = $targetDirectory . '/' . $testManifest->getTarget();
+            $testPaths[] = $testManifest->getTarget();
         }
 
         return $testPaths;
@@ -95,12 +117,12 @@ class SuiteManifest extends AbstractOutput
         $configData = $data['config'] ?? [];
         $manifestsData = $data['manifests'] ?? [];
 
-        $manifests = [];
+        $suiteManifest = new SuiteManifest(Configuration::fromArray($configData));
 
         foreach ($manifestsData as $manifestData) {
-            $manifests[] = TestManifest::fromArray($manifestData);
+            $suiteManifest->add(TestManifest::fromArray($manifestData));
         }
 
-        return new SuiteManifest(Configuration::fromArray($configData), $manifests);
+        return $suiteManifest;
     }
 }
