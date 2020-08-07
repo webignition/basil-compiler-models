@@ -110,54 +110,6 @@ class SuiteManifestTest extends TestCase
     }
 
     /**
-     * @dataProvider getTestPathsDataProvider
-     *
-     * @param SuiteManifest $suiteManifest
-     * @param array<string> $expectedTestPaths
-     */
-    public function testGetTestPaths(SuiteManifest $suiteManifest, array $expectedTestPaths)
-    {
-        self::assertSame($expectedTestPaths, $suiteManifest->getTestPaths());
-    }
-
-    public function getTestPathsDataProvider(): array
-    {
-        $suiteConfiguration = $this->createSuiteConfiguration();
-        $testConfiguration = new TestModelConfiguration('chrome', 'http://example.com');
-
-        return [
-            'empty generated test output collection' => [
-                'suiteManifest' => new SuiteManifest($suiteConfiguration, []),
-                'expectedTestPaths' => [],
-            ],
-            'populated generated test output collection' => [
-                'suiteManifest' => new SuiteManifest($suiteConfiguration, [
-                    new TestManifest(
-                        $testConfiguration,
-                        self::SUITE_SOURCE . '/test1.yml',
-                        self::SUITE_TARGET . '/GeneratedTest1.php'
-                    ),
-                    new TestManifest(
-                        $testConfiguration,
-                        self::SUITE_SOURCE . '/test2.yml',
-                        self::SUITE_TARGET . '/GeneratedTest2.php'
-                    ),
-                    new TestManifest(
-                        $testConfiguration,
-                        self::SUITE_SOURCE . '/test3.yml',
-                        self::SUITE_TARGET . '/GeneratedTest3.php'
-                    ),
-                ]),
-                'expectedTestPaths' => [
-                    '/target/GeneratedTest1.php',
-                    '/target/GeneratedTest2.php',
-                    '/target/GeneratedTest3.php',
-                ],
-            ],
-        ];
-    }
-
-    /**
      * @dataProvider getDataFromArrayDataProvider
      */
     public function testGetDataFromArray(SuiteManifest $output)

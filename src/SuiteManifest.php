@@ -36,20 +36,6 @@ class SuiteManifest extends AbstractOutput
         return $this->testManifests;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getTestPaths(): array
-    {
-        $testPaths = [];
-
-        foreach ($this->getTestManifests() as $testManifest) {
-            $testPaths[] = $testManifest->getTarget();
-        }
-
-        return $testPaths;
-    }
-
     public function validate(): int
     {
         if (Configuration::VALIDATION_STATE_VALID !== $this->getConfiguration()->validate()) {
