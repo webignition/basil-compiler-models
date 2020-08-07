@@ -15,96 +15,93 @@ use webignition\BasilModels\Test\Configuration as TestModelConfiguration;
 
 class SuiteManifestTest extends TestCase
 {
-    private SuiteManifest $output;
-    private ConfigurationInterface $configuration;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->configuration = new Configuration('test.yml', 'build', SuiteManifestTest::class);
-        $this->output = new SuiteManifest($this->configuration, []);
-    }
+    private const SUITE_SOURCE = '/source';
+    private const SUITE_TARGET = '/target';
 
     public function testGetConfiguration()
     {
-        self::assertSame($this->configuration, $this->output->getConfiguration());
+        $suiteConfiguration = $this->createSuiteConfiguration();
+        $suiteManifest = new SuiteManifest($suiteConfiguration);
+
+        self::assertSame($suiteConfiguration, $suiteManifest->getConfiguration());
     }
 
-    public function testGetOutput()
+    public function testGetTestManifests()
     {
         $testManifests = [
             new TestManifest(
                 new TestModelConfiguration('chrome', 'http://example.com'),
-                'test1.yml',
-                'GeneratedTest1.php'
+                self::SUITE_SOURCE . '/test1.yml',
+                self::SUITE_TARGET . '/GeneratedTest1.php'
             ),
             new TestManifest(
                 new TestModelConfiguration('firefox', 'http://example.com'),
-                'test2.yml',
-                'GeneratedTest2.php'
+                self::SUITE_SOURCE . '/test2.yml',
+                self::SUITE_TARGET . '/GeneratedTest2.php'
             ),
         ];
 
-        $output = new SuiteManifest($this->configuration, $testManifests);
-        self::assertSame($testManifests, $output->getTestManifests());
+        $suiteConfiguration = $this->createSuiteConfiguration();
+        $suiteManifest = new SuiteManifest($suiteConfiguration, $testManifests);
+
+        self::assertSame($testManifests, $suiteManifest->getTestManifests());
     }
 
     /**
      * @dataProvider getDataDataProvider
      *
-     * @param SuiteManifest $output
+     * @param SuiteManifest $suiteManifest
      * @param array<mixed> $expectedData
      */
-    public function testGetData(SuiteManifest $output, array $expectedData)
+    public function testGetData(SuiteManifest $suiteManifest, array $expectedData)
     {
-        self::assertSame($expectedData, $output->getData());
+        self::assertSame($expectedData, $suiteManifest->getData());
     }
 
     public function getDataDataProvider(): array
     {
-        $configuration = new Configuration('test.yml', 'build', SuiteManifestTest::class);
+        $suiteConfiguration = $this->createSuiteConfiguration();
         $testManifests = [
             new TestManifest(
                 new TestModelConfiguration('chrome', 'http://example.com'),
-                'test1.yml',
-                'GeneratedTest1.php'
+                self::SUITE_SOURCE . '/test1.yml',
+                self::SUITE_TARGET . '/GeneratedTest1.php'
             ),
             new TestManifest(
                 new TestModelConfiguration('firefox', 'http://example.com'),
-                'test2.yml',
-                'GeneratedTest2.php'
+                self::SUITE_SOURCE . '/test2.yml',
+                self::SUITE_TARGET . '/GeneratedTest2.php'
             ),
         ];
 
         return [
             'empty generated test output collection' => [
-                'output' => new SuiteManifest($configuration, []),
+                'suiteManifest' => new SuiteManifest($suiteConfiguration, []),
                 'expectedData' => [
-                    'config' => $configuration->getData(),
+                    'config' => $suiteConfiguration->getData(),
                     'manifests' => [],
                 ],
             ],
             'populated generated test output collection' => [
-                'output' => new SuiteManifest($configuration, $testManifests),
+                'suiteManifest' => new SuiteManifest($suiteConfiguration, $testManifests),
                 'expectedData' => [
-                    'config' => $configuration->getData(),
+                    'config' => $suiteConfiguration->getData(),
                     'manifests' => [
                         [
                             'config' => [
                                 'browser' => 'chrome',
                                 'url' => 'http://example.com',
                             ],
-                            'source' => 'test1.yml',
-                            'target' => 'GeneratedTest1.php',
+                            'source' => self::SUITE_SOURCE . '/test1.yml',
+                            'target' => self::SUITE_TARGET . '/GeneratedTest1.php',
                         ],
                         [
                             'config' => [
                                 'browser' => 'firefox',
                                 'url' => 'http://example.com',
                             ],
-                            'source' => 'test2.yml',
-                            'target' => 'GeneratedTest2.php',
+                            'source' => self::SUITE_SOURCE . '/test2.yml',
+                            'target' => self::SUITE_TARGET . '/GeneratedTest2.php',
                         ],
                     ],
                 ],
@@ -125,24 +122,36 @@ class SuiteManifestTest extends TestCase
 
     public function getTestPathsDataProvider(): array
     {
-        $compilerConfiguration = new Configuration('test.yml', 'build', SuiteManifestTest::class);
+        $suiteConfiguration = $this->createSuiteConfiguration();
         $testConfiguration = new TestModelConfiguration('chrome', 'http://example.com');
 
         return [
             'empty generated test output collection' => [
-                'suiteManifest' => new SuiteManifest($compilerConfiguration, []),
+                'suiteManifest' => new SuiteManifest($suiteConfiguration, []),
                 'expectedTestPaths' => [],
             ],
             'populated generated test output collection' => [
-                'suiteManifest' => new SuiteManifest($compilerConfiguration, [
-                    new TestManifest($testConfiguration, 'test1.yml', 'GeneratedTest1.php'),
-                    new TestManifest($testConfiguration, 'test2.yml', 'GeneratedTest2.php'),
-                    new TestManifest($testConfiguration, 'test3.yml', 'GeneratedTest3.php'),
+                'suiteManifest' => new SuiteManifest($suiteConfiguration, [
+                    new TestManifest(
+                        $testConfiguration,
+                        self::SUITE_SOURCE . '/test1.yml',
+                        self::SUITE_TARGET . '/GeneratedTest1.php'
+                    ),
+                    new TestManifest(
+                        $testConfiguration,
+                        self::SUITE_SOURCE . '/test2.yml',
+                        self::SUITE_TARGET . '/GeneratedTest2.php'
+                    ),
+                    new TestManifest(
+                        $testConfiguration,
+                        self::SUITE_SOURCE . '/test3.yml',
+                        self::SUITE_TARGET . '/GeneratedTest3.php'
+                    ),
                 ]),
                 'expectedTestPaths' => [
-                    'build/GeneratedTest1.php',
-                    'build/GeneratedTest2.php',
-                    'build/GeneratedTest3.php',
+                    '/target/GeneratedTest1.php',
+                    '/target/GeneratedTest2.php',
+                    '/target/GeneratedTest3.php',
                 ],
             ],
         ];
@@ -161,18 +170,30 @@ class SuiteManifestTest extends TestCase
 
     public function getDataFromArrayDataProvider(): array
     {
-        $compilerConfiguration = new Configuration('test.yml', 'build', SuiteManifestTest::class);
+        $suiteConfiguration = $this->createSuiteConfiguration();
         $testConfiguration = new TestModelConfiguration('chrome', 'http://example.com');
 
         return [
             'empty generated test output collection' => [
-                'suiteManifest' => new SuiteManifest($compilerConfiguration, []),
+                'suiteManifest' => new SuiteManifest($suiteConfiguration, []),
             ],
             'populated generated test output collection' => [
-                'suiteManifest' => new SuiteManifest($compilerConfiguration, [
-                    new TestManifest($testConfiguration, 'test1.yml', 'GeneratedTest1.php'),
-                    new TestManifest($testConfiguration, 'test2.yml', 'GeneratedTest2.php'),
-                    new TestManifest($testConfiguration, 'test3.yml', 'GeneratedTest3.php'),
+                'suiteManifest' => new SuiteManifest($suiteConfiguration, [
+                    new TestManifest(
+                        $testConfiguration,
+                        self::SUITE_SOURCE . '/test1.yml',
+                        self::SUITE_TARGET . '/GeneratedTest1.php'
+                    ),
+                    new TestManifest(
+                        $testConfiguration,
+                        self::SUITE_SOURCE . '/test2.yml',
+                        self::SUITE_TARGET . '/GeneratedTest2.php'
+                    ),
+                    new TestManifest(
+                        $testConfiguration,
+                        self::SUITE_SOURCE . '/test3.yml',
+                        self::SUITE_TARGET . '/GeneratedTest3.php'
+                    ),
                 ]),
             ],
         ];
@@ -225,13 +246,76 @@ class SuiteManifestTest extends TestCase
                     [
                         new TestManifest(
                             new TestConfiguration('chrome', 'http:;//example.com'),
-                            'test.yml',
-                            'GeneratedTest.php'
+                            self::SUITE_SOURCE . '/test.yml',
+                            self::SUITE_TARGET . '/GeneratedTest.php'
                         ),
                     ]
                 ),
                 'expectedValidationState' => suiteManifest::VALIDATION_STATE_VALID,
             ],
         ];
+    }
+
+    public function testAdd()
+    {
+        $testManifest1 = new TestManifest(
+            new TestConfiguration('chrome', 'http:;//example.com'),
+            self::SUITE_SOURCE . '/test.yml',
+            self::SUITE_TARGET . '/GeneratedTest.php'
+        );
+
+        $testManifest2 = new TestManifest(
+            new TestConfiguration('firefox', 'http:;//example.com'),
+            self::SUITE_SOURCE . '/test.yml',
+            self::SUITE_TARGET . '/GeneratedTest.php'
+        );
+
+        $suiteConfiguration = $this->createSuiteConfiguration();
+        $suiteManifest = new SuiteManifest($suiteConfiguration, [$testManifest1]);
+
+        self::assertEquals([$testManifest1], $suiteManifest->getTestManifests());
+
+        $suiteManifest->add($testManifest2);
+        self::assertEquals([$testManifest1, $testManifest2], $suiteManifest->getTestManifests());
+    }
+
+    public function testCreateTestManifest()
+    {
+        $initialTestManifest = new TestManifest(
+            new TestConfiguration('chrome', 'http:;//example.com'),
+            self::SUITE_SOURCE . '/test.yml',
+            self::SUITE_TARGET . '/GeneratedChromeTest.php'
+        );
+
+        $suiteConfiguration = $this->createSuiteConfiguration();
+        $suiteManifest = new SuiteManifest($suiteConfiguration, [$initialTestManifest]);
+
+        self::assertEquals([$initialTestManifest], $suiteManifest->getTestManifests());
+
+        $addedTestManifest = $suiteManifest->createTestManifest(
+            new TestModelConfiguration('firefox', 'http://example.com'),
+            'test2.yml',
+            'GeneratedFireFoxTest.php'
+        );
+
+        self::assertEquals(
+            $addedTestManifest,
+            new TestManifest(
+                new TestModelConfiguration('firefox', 'http://example.com'),
+                self::SUITE_SOURCE . '/test2.yml',
+                self::SUITE_TARGET . '/GeneratedFireFoxTest.php'
+            )
+        );
+
+        self::assertEquals([$initialTestManifest, $addedTestManifest], $suiteManifest->getTestManifests());
+    }
+
+    private function createSuiteConfiguration(): ConfigurationInterface
+    {
+        return new Configuration(
+            self::SUITE_SOURCE,
+            self::SUITE_TARGET,
+            SuiteManifestTest::class
+        );
     }
 }
