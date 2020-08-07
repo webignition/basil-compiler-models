@@ -256,60 +256,6 @@ class SuiteManifestTest extends TestCase
         ];
     }
 
-    public function testAdd()
-    {
-        $testManifest1 = new TestManifest(
-            new TestConfiguration('chrome', 'http:;//example.com'),
-            self::SUITE_SOURCE . '/test.yml',
-            self::SUITE_TARGET . '/GeneratedTest.php'
-        );
-
-        $testManifest2 = new TestManifest(
-            new TestConfiguration('firefox', 'http:;//example.com'),
-            self::SUITE_SOURCE . '/test.yml',
-            self::SUITE_TARGET . '/GeneratedTest.php'
-        );
-
-        $suiteConfiguration = $this->createSuiteConfiguration();
-        $suiteManifest = new SuiteManifest($suiteConfiguration, [$testManifest1]);
-
-        self::assertEquals([$testManifest1], $suiteManifest->getTestManifests());
-
-        $suiteManifest->add($testManifest2);
-        self::assertEquals([$testManifest1, $testManifest2], $suiteManifest->getTestManifests());
-    }
-
-    public function testCreateTestManifest()
-    {
-        $initialTestManifest = new TestManifest(
-            new TestConfiguration('chrome', 'http:;//example.com'),
-            self::SUITE_SOURCE . '/test.yml',
-            self::SUITE_TARGET . '/GeneratedChromeTest.php'
-        );
-
-        $suiteConfiguration = $this->createSuiteConfiguration();
-        $suiteManifest = new SuiteManifest($suiteConfiguration, [$initialTestManifest]);
-
-        self::assertEquals([$initialTestManifest], $suiteManifest->getTestManifests());
-
-        $addedTestManifest = $suiteManifest->createTestManifest(
-            new TestModelConfiguration('firefox', 'http://example.com'),
-            'test2.yml',
-            'GeneratedFireFoxTest.php'
-        );
-
-        self::assertEquals(
-            $addedTestManifest,
-            new TestManifest(
-                new TestModelConfiguration('firefox', 'http://example.com'),
-                self::SUITE_SOURCE . '/test2.yml',
-                self::SUITE_TARGET . '/GeneratedFireFoxTest.php'
-            )
-        );
-
-        self::assertEquals([$initialTestManifest, $addedTestManifest], $suiteManifest->getTestManifests());
-    }
-
     private function createSuiteConfiguration(): ConfigurationInterface
     {
         return new Configuration(

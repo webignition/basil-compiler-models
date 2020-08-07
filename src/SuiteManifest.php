@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilerModels;
 
-use webignition\BasilModels\Test\ConfigurationInterface as TestConfigurationInterface;
-
 class SuiteManifest extends AbstractOutput
 {
     public const VALIDATION_STATE_VALID = 1;
@@ -28,28 +26,6 @@ class SuiteManifest extends AbstractOutput
         $this->testManifests = array_filter($manifests, function ($item) {
             return $item instanceof TestManifest;
         });
-    }
-
-    public function createTestManifest(
-        TestConfigurationInterface $testConfiguration,
-        string $relativeSource,
-        string $relativeTarget
-    ): TestManifest {
-        $suiteConfiguration = $this->getConfiguration();
-        $testManifest = new TestManifest(
-            $testConfiguration,
-            $suiteConfiguration->getSource() . '/' . $relativeSource,
-            $suiteConfiguration->getTarget() . '/' . $relativeTarget
-        );
-
-        $this->add($testManifest);
-
-        return $testManifest;
-    }
-
-    public function add(TestManifest $testManifest): void
-    {
-        $this->testManifests[] = $testManifest;
     }
 
     /**
@@ -117,12 +93,11 @@ class SuiteManifest extends AbstractOutput
         $configData = $data['config'] ?? [];
         $manifestsData = $data['manifests'] ?? [];
 
-        $suiteManifest = new SuiteManifest(Configuration::fromArray($configData));
-
+        $testManifests = [];
         foreach ($manifestsData as $manifestData) {
-            $suiteManifest->add(TestManifest::fromArray($manifestData));
+            $testManifests[] = TestManifest::fromArray($manifestData);
         }
 
-        return $suiteManifest;
+        return new SuiteManifest(Configuration::fromArray($configData), $testManifests);
     }
 }
