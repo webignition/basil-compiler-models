@@ -10,6 +10,8 @@ class Configuration implements ConfigurationInterface
     public const VALIDATION_STATE_SOURCE_NOT_READABLE = 2;
     public const VALIDATION_STATE_TARGET_NOT_DIRECTORY = 3;
     public const VALIDATION_STATE_TARGET_NOT_WRITABLE = 4;
+    public const VALIDATION_STATE_SOURCE_NOT_ABSOLUTE = 5;
+    public const VALIDATION_STATE_TARGET_NOT_ABSOLUTE = 6;
 
     private string $source;
     private string $target;
@@ -51,8 +53,18 @@ class Configuration implements ConfigurationInterface
 
     public function validate(): int
     {
+        $sourceFirstCharacter = $this->source[0] ?? '';
+        if (DIRECTORY_SEPARATOR !== $sourceFirstCharacter) {
+            return self::VALIDATION_STATE_SOURCE_NOT_ABSOLUTE;
+        }
+
         if (!is_readable($this->source)) {
             return self::VALIDATION_STATE_SOURCE_NOT_READABLE;
+        }
+
+        $targetFirstCharacter = $this->target[0] ?? '';
+        if (DIRECTORY_SEPARATOR !== $targetFirstCharacter) {
+            return self::VALIDATION_STATE_TARGET_NOT_ABSOLUTE;
         }
 
         if (!is_dir($this->target)) {
