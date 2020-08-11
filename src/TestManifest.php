@@ -30,6 +30,11 @@ class TestManifest
         return $this->target;
     }
 
+    public function getConfiguration(): TestConfigurationInterface
+    {
+        return $this->configuration;
+    }
+
     public function validate(): int
     {
         if (TestConfigurationInterface::VALIDATION_STATE_VALID !== $this->configuration->validate()) {

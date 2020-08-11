@@ -30,6 +30,11 @@ class TestManifestTest extends TestCase
         self::assertSame(self::TARGET, $this->manifest->getTarget());
     }
 
+    public function testGetConfiguration()
+    {
+        self::assertSame($this->configuration, $this->manifest->getConfiguration());
+    }
+
     public function testGetData()
     {
         self::assertSame(
