@@ -136,30 +136,56 @@ class ConfigurationTest extends TestCase
         ];
 
         return [
+            'source empty' => [
+                'configuration' => new Configuration('', '', ''),
+                'expectedValidationState' => Configuration::VALIDATION_STATE_SOURCE_NOT_ABSOLUTE,
+            ],
+            'source not absolute' => [
+                'configuration' => new Configuration('relative/path/test.yml', '', ''),
+                'expectedValidationState' => Configuration::VALIDATION_STATE_SOURCE_NOT_ABSOLUTE,
+            ],
             'source not readable' => [
-                'configuration' => new Configuration('unreadable.yml', '', ''),
+                'configuration' => new Configuration('/unreadable.yml', '', ''),
                 'expectedValidationState' => Configuration::VALIDATION_STATE_SOURCE_NOT_READABLE,
                 'initializer' => function () use ($isReadableMockArguments) {
                     PHPMockery::mock(...$isReadableMockArguments)
-                        ->with('unreadable.yml')
+                        ->with('/unreadable.yml')
                         ->andReturnFalse();
                 },
             ],
+            'target empty' => [
+                'configuration' => new Configuration('/test.yml', '', ''),
+                'expectedValidationState' => Configuration::VALIDATION_STATE_TARGET_NOT_ABSOLUTE,
+                'initializer' => function () use ($isReadableMockArguments) {
+                    PHPMockery::mock(...$isReadableMockArguments)
+                        ->with('/test.yml')
+                        ->andReturnTrue();
+                },
+            ],
+            'target not absolute' => [
+                'configuration' => new Configuration('/test.yml', 'relative/path', ''),
+                'expectedValidationState' => Configuration::VALIDATION_STATE_TARGET_NOT_ABSOLUTE,
+                'initializer' => function () use ($isReadableMockArguments) {
+                    PHPMockery::mock(...$isReadableMockArguments)
+                        ->with('/test.yml')
+                        ->andReturnTrue();
+                },
+            ],
             'target not a directory' => [
-                'configuration' => new Configuration('test.yml', 'target.yml', ''),
+                'configuration' => new Configuration('/test.yml', '/target.yml', ''),
                 'expectedValidationState' => Configuration::VALIDATION_STATE_TARGET_NOT_DIRECTORY,
                 'initializer' => function () use ($isReadableMockArguments, $isDirMockArguments) {
                     PHPMockery::mock(...$isReadableMockArguments)
-                        ->with('test.yml')
+                        ->with('/test.yml')
                         ->andReturnTrue();
 
                     PHPMockery::mock(...$isDirMockArguments)
-                        ->with('target.yml')
+                        ->with('/target.yml')
                         ->andReturnFalse();
                 },
             ],
             'target not a writable' => [
-                'configuration' => new Configuration('test.yml', 'target', ''),
+                'configuration' => new Configuration('/test.yml', '/target', ''),
                 'expectedValidationState' => Configuration::VALIDATION_STATE_TARGET_NOT_WRITABLE,
                 'initializer' => function () use (
                     $isReadableMockArguments,
@@ -167,20 +193,20 @@ class ConfigurationTest extends TestCase
                     $isWritableMockArguments
                 ) {
                     PHPMockery::mock(...$isReadableMockArguments)
-                        ->with('test.yml')
+                        ->with('/test.yml')
                         ->andReturnTrue();
 
                     PHPMockery::mock(...$isDirMockArguments)
-                        ->with('target')
+                        ->with('/target')
                         ->andReturnTrue();
 
                     PHPMockery::mock(...$isWritableMockArguments)
-                        ->with('target')
+                        ->with('/target')
                         ->andReturnFalse();
                 },
             ],
             'valid' => [
-                'configuration' => new Configuration('test.yml', 'target', ''),
+                'configuration' => new Configuration('/test.yml', '/target', ''),
                 'expectedValidationState' => Configuration::VALIDATION_STATE_VALID,
                 'initializer' => function () use (
                     $isReadableMockArguments,
@@ -188,15 +214,15 @@ class ConfigurationTest extends TestCase
                     $isWritableMockArguments
                 ) {
                     PHPMockery::mock(...$isReadableMockArguments)
-                        ->with('test.yml')
+                        ->with('/test.yml')
                         ->andReturnTrue();
 
                     PHPMockery::mock(...$isDirMockArguments)
-                        ->with('target')
+                        ->with('/target')
                         ->andReturnTrue();
 
                     PHPMockery::mock(...$isWritableMockArguments)
-                        ->with('target')
+                        ->with('/target')
                         ->andReturnTrue();
                 },
             ],
