@@ -8,11 +8,11 @@ class SuiteManifestFactory
 {
     /**
      * @param array<mixed> $data
-     * @return SuiteManifest|null
+     * @return SuiteManifest
      *
      * @throws InvalidSuiteManifestException
      */
-    public function createFromArray(array $data): ?SuiteManifest
+    public function createFromArray(array $data): SuiteManifest
     {
         $manifest = SuiteManifest::fromArray($data);
         $validationState = $manifest->validate();
