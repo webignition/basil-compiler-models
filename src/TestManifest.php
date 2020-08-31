@@ -25,6 +25,11 @@ class TestManifest
         $this->target = $target;
     }
 
+    public function getSource(): string
+    {
+        return $this->source;
+    }
+
     public function getTarget(): string
     {
         return $this->target;
