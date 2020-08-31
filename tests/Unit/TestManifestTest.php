@@ -25,6 +25,11 @@ class TestManifestTest extends TestCase
         $this->manifest = new TestManifest($this->configuration, self::SOURCE, self::TARGET);
     }
 
+    public function testGetSource()
+    {
+        self::assertSame(self::SOURCE, $this->manifest->getSource());
+    }
+
     public function testGetTarget()
     {
         self::assertSame(self::TARGET, $this->manifest->getTarget());
