@@ -17,12 +17,18 @@ class TestManifest
     private string $source;
     private string $target;
     private TestConfigurationInterface $configuration;
+    private int $stepCount;
 
-    public function __construct(TestConfigurationInterface $configuration, string $source, string $target)
-    {
+    public function __construct(
+        TestConfigurationInterface $configuration,
+        string $source,
+        string $target,
+        int $stepCount
+    ) {
         $this->configuration = $configuration;
         $this->source = $source;
         $this->target = $target;
+        $this->stepCount = $stepCount;
     }
 
     public function getSource(): string
@@ -38,6 +44,11 @@ class TestManifest
     public function getConfiguration(): TestConfigurationInterface
     {
         return $this->configuration;
+    }
+
+    public function getStepCount(): int
+    {
+        return $this->stepCount;
     }
 
     public function validate(): int
@@ -69,6 +80,7 @@ class TestManifest
             ],
             'source' => $this->source,
             'target' => $this->target,
+            'step_count' => $this->stepCount,
         ];
     }
 
@@ -85,7 +97,8 @@ class TestManifest
                 $data['config']['url']
             ),
             $data['source'],
-            $data['target']
+            $data['target'],
+            $data['step_count']
         );
     }
 }

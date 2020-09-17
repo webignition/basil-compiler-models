@@ -13,6 +13,7 @@ class TestManifestTest extends TestCase
 {
     private const SOURCE = 'test.yml';
     private const TARGET = 'GeneratedTest.php';
+    private const STEP_COUNT = 9;
 
     private TestManifest $manifest;
     private TestConfigurationInterface $configuration;
@@ -22,7 +23,7 @@ class TestManifestTest extends TestCase
         parent::setUp();
 
         $this->configuration = new TestConfiguration('chrome', 'http://example.com');
-        $this->manifest = new TestManifest($this->configuration, self::SOURCE, self::TARGET);
+        $this->manifest = new TestManifest($this->configuration, self::SOURCE, self::TARGET, self::STEP_COUNT);
     }
 
     public function testGetSource()
@@ -40,6 +41,11 @@ class TestManifestTest extends TestCase
         self::assertSame($this->configuration, $this->manifest->getConfiguration());
     }
 
+    public function testGetStepCount()
+    {
+        self::assertSame(self::STEP_COUNT, $this->manifest->getStepCount());
+    }
+
     public function testGetData()
     {
         self::assertSame(
@@ -50,6 +56,7 @@ class TestManifestTest extends TestCase
                 ],
                 'source' => self::SOURCE,
                 'target' => self::TARGET,
+                'step_count' => self::STEP_COUNT,
             ],
             $this->manifest->getData()
         );
@@ -58,7 +65,7 @@ class TestManifestTest extends TestCase
     public function testFromArray()
     {
         self::assertEquals(
-            new TestManifest($this->configuration, self::SOURCE, self::TARGET),
+            new TestManifest($this->configuration, self::SOURCE, self::TARGET, self::STEP_COUNT),
             TestManifest::fromArray([
                 'config' => [
                     'browser' => 'chrome',
@@ -66,6 +73,7 @@ class TestManifestTest extends TestCase
                 ],
                 'source' => self::SOURCE,
                 'target' => self::TARGET,
+                'step_count' => self::STEP_COUNT,
             ])
         );
     }
@@ -85,7 +93,8 @@ class TestManifestTest extends TestCase
                 'testManifest' => new TestManifest(
                     new TestConfiguration('', ''),
                     'source',
-                    'target'
+                    'target',
+                    self::STEP_COUNT
                 ),
                 'expectedValidationState' => TestManifest::VALIDATION_STATE_CONFIGURATION_INVALID,
             ],
@@ -93,7 +102,8 @@ class TestManifestTest extends TestCase
                 'testManifest' => new TestManifest(
                     new TestConfiguration('chrome', 'http://example.com'),
                     '',
-                    'target'
+                    'target',
+                    self::STEP_COUNT
                 ),
                 'expectedValidationState' => TestManifest::VALIDATION_STATE_SOURCE_EMPTY,
             ],
@@ -101,7 +111,8 @@ class TestManifestTest extends TestCase
                 'testManifest' => new TestManifest(
                     new TestConfiguration('chrome', 'http://example.com'),
                     'source',
-                    ''
+                    '',
+                    self::STEP_COUNT
                 ),
                 'expectedValidationState' => TestManifest::VALIDATION_STATE_TARGET_EMPTY,
             ],
@@ -109,7 +120,8 @@ class TestManifestTest extends TestCase
                 'testManifest' => new TestManifest(
                     new TestConfiguration('chrome', 'http://example.com'),
                     'source',
-                    'target'
+                    'target',
+                    self::STEP_COUNT
                 ),
                 'expectedValidationState' => TestManifest::VALIDATION_STATE_VALID,
             ],
