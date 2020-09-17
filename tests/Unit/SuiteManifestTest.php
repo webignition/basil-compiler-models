@@ -32,12 +32,14 @@ class SuiteManifestTest extends TestCase
             new TestManifest(
                 new TestModelConfiguration('chrome', 'http://example.com'),
                 self::SUITE_SOURCE . '/test1.yml',
-                self::SUITE_TARGET . '/GeneratedTest1.php'
+                self::SUITE_TARGET . '/GeneratedTest1.php',
+                1
             ),
             new TestManifest(
                 new TestModelConfiguration('firefox', 'http://example.com'),
                 self::SUITE_SOURCE . '/test2.yml',
-                self::SUITE_TARGET . '/GeneratedTest2.php'
+                self::SUITE_TARGET . '/GeneratedTest2.php',
+                2
             ),
         ];
 
@@ -65,12 +67,14 @@ class SuiteManifestTest extends TestCase
             new TestManifest(
                 new TestModelConfiguration('chrome', 'http://example.com'),
                 self::SUITE_SOURCE . '/test1.yml',
-                self::SUITE_TARGET . '/GeneratedTest1.php'
+                self::SUITE_TARGET . '/GeneratedTest1.php',
+                3
             ),
             new TestManifest(
                 new TestModelConfiguration('firefox', 'http://example.com'),
                 self::SUITE_SOURCE . '/test2.yml',
-                self::SUITE_TARGET . '/GeneratedTest2.php'
+                self::SUITE_TARGET . '/GeneratedTest2.php',
+                4
             ),
         ];
 
@@ -94,6 +98,7 @@ class SuiteManifestTest extends TestCase
                             ],
                             'source' => self::SUITE_SOURCE . '/test1.yml',
                             'target' => self::SUITE_TARGET . '/GeneratedTest1.php',
+                            'step_count' => 3,
                         ],
                         [
                             'config' => [
@@ -102,6 +107,7 @@ class SuiteManifestTest extends TestCase
                             ],
                             'source' => self::SUITE_SOURCE . '/test2.yml',
                             'target' => self::SUITE_TARGET . '/GeneratedTest2.php',
+                            'step_count' => 4,
                         ],
                     ],
                 ],
@@ -134,17 +140,20 @@ class SuiteManifestTest extends TestCase
                     new TestManifest(
                         $testConfiguration,
                         self::SUITE_SOURCE . '/test1.yml',
-                        self::SUITE_TARGET . '/GeneratedTest1.php'
+                        self::SUITE_TARGET . '/GeneratedTest1.php',
+                        5
                     ),
                     new TestManifest(
                         $testConfiguration,
                         self::SUITE_SOURCE . '/test2.yml',
-                        self::SUITE_TARGET . '/GeneratedTest2.php'
+                        self::SUITE_TARGET . '/GeneratedTest2.php',
+                        6
                     ),
                     new TestManifest(
                         $testConfiguration,
                         self::SUITE_SOURCE . '/test3.yml',
-                        self::SUITE_TARGET . '/GeneratedTest3.php'
+                        self::SUITE_TARGET . '/GeneratedTest3.php',
+                        7
                     ),
                 ]),
             ],
@@ -186,7 +195,8 @@ class SuiteManifestTest extends TestCase
                         new TestManifest(
                             new TestConfiguration('', ''),
                             '',
-                            ''
+                            '',
+                            8
                         ),
                     ]
                 ),
@@ -199,7 +209,8 @@ class SuiteManifestTest extends TestCase
                         new TestManifest(
                             new TestConfiguration('chrome', 'http:;//example.com'),
                             self::SUITE_SOURCE . '/test.yml',
-                            self::SUITE_TARGET . '/GeneratedTest.php'
+                            self::SUITE_TARGET . '/GeneratedTest.php',
+                            9
                         ),
                     ]
                 ),
