@@ -138,7 +138,7 @@ class ConfigurationTest extends TestCase
         return [
             'source empty' => [
                 'configuration' => new Configuration('', '', ''),
-                'expectedValidationState' => Configuration::VALIDATION_STATE_SOURCE_NOT_ABSOLUTE,
+                'expectedValidationState' => Configuration::VALIDATION_STATE_SOURCE_EMPTY,
             ],
             'source not absolute' => [
                 'configuration' => new Configuration('relative/path/test.yml', '', ''),
@@ -155,7 +155,7 @@ class ConfigurationTest extends TestCase
             ],
             'target empty' => [
                 'configuration' => new Configuration('/test.yml', '', ''),
-                'expectedValidationState' => Configuration::VALIDATION_STATE_TARGET_NOT_ABSOLUTE,
+                'expectedValidationState' => Configuration::VALIDATION_STATE_TARGET_EMPTY,
                 'initializer' => function () use ($isReadableMockArguments) {
                     PHPMockery::mock(...$isReadableMockArguments)
                         ->with('/test.yml')
