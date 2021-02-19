@@ -22,21 +22,26 @@
         }
     },
     "scripts": {
+        "cs-ecs": "./vendor/bin/ecs check src tests --ansi --no-progress-bar --config ecs.php",
+        "cs-phpcs": "./vendor/bin/phpcs",
         "cs": [
-            "./vendor/bin/ecs check src tests --ansi --config ecs.php",
-            "./vendor/bin/phpcs"
+            "@cs-ecs",
+            "@cs-phpcs"
         ],
-        "static-analysis": "./vendor/bin/phpstan analyse --ansi",
+        "cs-fix": [
+            "./vendor/bin/ecs check src tests --ansi --config ecs.php --fix"
+        ],
+        "static-analysis": "./vendor/bin/phpstan analyse",
         "test": "./vendor/bin/phpunit --colors=always",
         "ci": [
-            "@cs",
-            "@static-analysis",
-            "@test"
+            "@composer cs",
+            "@composer static-analysis",
+            "@composer test"
         ]
     },
     "require": {
-        "php": ">=7.4",
-        "webignition/basil-models": ">=0.57,<1"
+        "php": ">=7.4|^8",
+        "webignition/basil-models": ">=0.58,<1"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",

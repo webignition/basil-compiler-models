@@ -4,31 +4,31 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "321c18a92f62ff32b1e62009dda02a29",
+    "content-hash": "c08b82d6ce74c1fe140cd7184cea2eda",
     "packages": [
         {
             "name": "webignition/basil-models",
-            "version": "0.57",
+            "version": "0.58",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-models.git",
-                "reference": "67d500daa092590652d3d93c33d8fa70dfd265e2"
+                "reference": "2184f3719e5cd91a9029f30b6e84114d22f29e20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-models/zipball/67d500daa092590652d3d93c33d8fa70dfd265e2",
-                "reference": "67d500daa092590652d3d93c33d8fa70dfd265e2",
+                "url": "https://api.github.com/repos/webignition/basil-models/zipball/2184f3719e5cd91a9029f30b6e84114d22f29e20",
+                "reference": "2184f3719e5cd91a9029f30b6e84114d22f29e20",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": ">=7.4"
+                "php": ">=7.4|^8"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.12",
-                "phpunit/phpunit": "~9.0",
-                "squizlabs/php_codesniffer": "3.*",
-                "symplify/easy-coding-standard": "^8.1",
+                "phpstan/phpstan": "^0.12.77",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.5",
+                "symplify/easy-coding-standard": "^9.1",
                 "webignition/object-reflector": "^0.1.0"
             },
             "type": "library",
@@ -48,7 +48,11 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-models",
-            "time": "2020-07-29T13:22:30+00:00"
+            "support": {
+                "issues": "https://github.com/webignition/basil-models/issues",
+                "source": "https://github.com/webignition/basil-models/tree/0.58"
+            },
+            "time": "2021-02-18T15:16:57+00:00"
         }
     ],
     "packages-dev": [
@@ -6941,7 +6945,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4"
+        "php": ">=7.4|^8"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"
