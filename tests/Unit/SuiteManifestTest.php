@@ -18,7 +18,7 @@ class SuiteManifestTest extends TestCase
     private const SUITE_SOURCE = '/source';
     private const SUITE_TARGET = '/target';
 
-    public function testGetConfiguration()
+    public function testGetConfiguration(): void
     {
         $suiteConfiguration = $this->createSuiteConfiguration();
         $suiteManifest = new SuiteManifest($suiteConfiguration);
@@ -26,7 +26,7 @@ class SuiteManifestTest extends TestCase
         self::assertSame($suiteConfiguration, $suiteManifest->getConfiguration());
     }
 
-    public function testGetTestManifests()
+    public function testGetTestManifests(): void
     {
         $testManifests = [
             new TestManifest(
@@ -55,11 +55,14 @@ class SuiteManifestTest extends TestCase
      * @param SuiteManifest $suiteManifest
      * @param array<mixed> $expectedData
      */
-    public function testGetData(SuiteManifest $suiteManifest, array $expectedData)
+    public function testGetData(SuiteManifest $suiteManifest, array $expectedData): void
     {
         self::assertSame($expectedData, $suiteManifest->getData());
     }
 
+    /**
+     * @return array[]
+     */
     public function getDataDataProvider(): array
     {
         $suiteConfiguration = $this->createSuiteConfiguration();
@@ -118,7 +121,7 @@ class SuiteManifestTest extends TestCase
     /**
      * @dataProvider getDataFromArrayDataProvider
      */
-    public function testGetDataFromArray(SuiteManifest $output)
+    public function testGetDataFromArray(SuiteManifest $output): void
     {
         self::assertEquals(
             $output,
@@ -126,6 +129,9 @@ class SuiteManifestTest extends TestCase
         );
     }
 
+    /**
+     * @return array[]
+     */
     public function getDataFromArrayDataProvider(): array
     {
         $suiteConfiguration = $this->createSuiteConfiguration();
@@ -163,11 +169,14 @@ class SuiteManifestTest extends TestCase
     /**
      * @dataProvider validateDataProvider
      */
-    public function testValidate(SuiteManifest $suiteManifest, int $expectedValidationState)
+    public function testValidate(SuiteManifest $suiteManifest, int $expectedValidationState): void
     {
         self::assertSame($expectedValidationState, $suiteManifest->validate());
     }
 
+    /**
+     * @return array[]
+     */
     public function validateDataProvider(): array
     {
         $invalidConfiguration = Mockery::mock(ConfigurationInterface::class);

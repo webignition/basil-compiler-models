@@ -25,17 +25,17 @@ class ErrorOutputTest extends TestCase
         $this->output = new ErrorOutput($this->configuration, $this->message, $this->code);
     }
 
-    public function testGetConfiguration()
+    public function testGetConfiguration(): void
     {
         self::assertSame($this->configuration, $this->output->getConfiguration());
     }
 
-    public function testGetCode()
+    public function testGetCode(): void
     {
         self::assertSame($this->code, $this->output->getCode());
     }
 
-    public function testGetData()
+    public function testGetData(): void
     {
         self::assertSame(
             [
@@ -52,7 +52,7 @@ class ErrorOutputTest extends TestCase
     /**
      * @dataProvider getDataFromArrayDataProvider
      */
-    public function testGetDataFromArray(ErrorOutput $output)
+    public function testGetDataFromArray(ErrorOutput $output): void
     {
         self::assertEquals(
             $output,
@@ -60,6 +60,9 @@ class ErrorOutputTest extends TestCase
         );
     }
 
+    /**
+     * @return array[]
+     */
     public function getDataFromArrayDataProvider(): array
     {
         return [
