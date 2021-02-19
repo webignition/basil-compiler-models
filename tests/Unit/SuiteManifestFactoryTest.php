@@ -25,7 +25,7 @@ class SuiteManifestFactoryTest extends TestCase
         $this->factory = new SuiteManifestFactory();
     }
 
-    public function testCreateFromArrayThrowsException()
+    public function testCreateFromArrayThrowsException(): void
     {
         try {
             $this->factory->createFromArray([]);
@@ -46,7 +46,7 @@ class SuiteManifestFactoryTest extends TestCase
         }
     }
 
-    public function testCreateFromArray()
+    public function testCreateFromArray(): void
     {
         $source = '/source';
         $target = '/target';

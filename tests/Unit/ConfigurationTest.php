@@ -25,22 +25,22 @@ class ConfigurationTest extends TestCase
         $this->configuration = new Configuration(self::SOURCE, self::TARGET, self::BASE_CLASS);
     }
 
-    public function testGetSource()
+    public function testGetSource(): void
     {
         self::assertSame(self::SOURCE, $this->configuration->getSource());
     }
 
-    public function testGetTarget()
+    public function testGetTarget(): void
     {
         self::assertSame(self::TARGET, $this->configuration->getTarget());
     }
 
-    public function testGetBaseClass()
+    public function testGetBaseClass(): void
     {
         self::assertSame(self::BASE_CLASS, $this->configuration->getBaseClass());
     }
 
-    public function testGetData()
+    public function testGetData(): void
     {
         self::assertSame(
             [
@@ -58,11 +58,14 @@ class ConfigurationTest extends TestCase
      * @param array<mixed> $data
      * @param Configuration $expectedConfiguration
      */
-    public function testFromArray(array $data, Configuration $expectedConfiguration)
+    public function testFromArray(array $data, Configuration $expectedConfiguration): void
     {
         self::assertEquals($expectedConfiguration, Configuration::fromArray($data));
     }
 
+    /**
+     * @return array[]
+     */
     public function fromArrayDataProvider(): array
     {
         return [
@@ -106,7 +109,7 @@ class ConfigurationTest extends TestCase
         ConfigurationInterface $configuration,
         int $expectedValidationState,
         ?callable $initializer = null
-    ) {
+    ): void {
         if (is_callable($initializer)) {
             $initializer();
         }
@@ -116,6 +119,9 @@ class ConfigurationTest extends TestCase
         Mockery::close();
     }
 
+    /**
+     * @return array[]
+     */
     public function isValidDataProvider(): array
     {
         $mockNamespace = 'webignition\BasilCompilerModels';

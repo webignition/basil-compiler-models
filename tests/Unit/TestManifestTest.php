@@ -26,27 +26,27 @@ class TestManifestTest extends TestCase
         $this->manifest = new TestManifest($this->configuration, self::SOURCE, self::TARGET, self::STEP_COUNT);
     }
 
-    public function testGetSource()
+    public function testGetSource(): void
     {
         self::assertSame(self::SOURCE, $this->manifest->getSource());
     }
 
-    public function testGetTarget()
+    public function testGetTarget(): void
     {
         self::assertSame(self::TARGET, $this->manifest->getTarget());
     }
 
-    public function testGetConfiguration()
+    public function testGetConfiguration(): void
     {
         self::assertSame($this->configuration, $this->manifest->getConfiguration());
     }
 
-    public function testGetStepCount()
+    public function testGetStepCount(): void
     {
         self::assertSame(self::STEP_COUNT, $this->manifest->getStepCount());
     }
 
-    public function testGetData()
+    public function testGetData(): void
     {
         self::assertSame(
             [
@@ -62,7 +62,7 @@ class TestManifestTest extends TestCase
         );
     }
 
-    public function testFromArray()
+    public function testFromArray(): void
     {
         self::assertEquals(
             new TestManifest($this->configuration, self::SOURCE, self::TARGET, self::STEP_COUNT),
@@ -81,11 +81,14 @@ class TestManifestTest extends TestCase
     /**
      * @dataProvider validateDataProvider
      */
-    public function testValidate(TestManifest $testManifest, int $expectedValidationState)
+    public function testValidate(TestManifest $testManifest, int $expectedValidationState): void
     {
         self::assertSame($expectedValidationState, $testManifest->validate());
     }
 
+    /**
+     * @return array[]
+     */
     public function validateDataProvider(): array
     {
         return [
