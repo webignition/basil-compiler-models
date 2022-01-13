@@ -7,7 +7,9 @@ namespace webignition\BasilCompilerModels;
 interface ConfigurationInterface
 {
     public function getSource(): string;
+
     public function getTarget(): string;
+
     public function getBaseClass(): string;
 
     /**
@@ -19,8 +21,6 @@ interface ConfigurationInterface
 
     /**
      * @param array<mixed> $data
-     *
-     * @return self
      */
     public static function fromArray(array $data): self;
 }

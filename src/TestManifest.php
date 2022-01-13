@@ -86,19 +86,26 @@ class TestManifest
 
     /**
      * @param array<string, mixed> $data
-     *
-     * @return TestManifest
      */
     public static function fromArray(array $data): TestManifest
     {
+        $configData = $data['config'] ?? [];
+        $configData = is_array($configData) ? $configData : [];
+
+        $source = $data['source'] ?? '';
+        $source = is_string($source) ? $source : '';
+
+        $target = $data['target'] ?? '';
+        $target = is_string($target) ? $target : '';
+
+        $stepCount = $data['step_count'] ?? 0;
+        $stepCount = is_int($stepCount) ? $stepCount : 0;
+
         return new TestManifest(
-            new TestConfiguration(
-                $data['config']['browser'],
-                $data['config']['url']
-            ),
-            $data['source'],
-            $data['target'],
-            $data['step_count']
+            new TestConfiguration($configData['browser'] ?? '', $configData['url'] ?? ''),
+            $source,
+            $target,
+            $stepCount
         );
     }
 }

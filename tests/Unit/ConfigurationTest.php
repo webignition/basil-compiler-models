@@ -56,7 +56,6 @@ class ConfigurationTest extends TestCase
      * @dataProvider fromArrayDataProvider
      *
      * @param array<mixed> $data
-     * @param Configuration $expectedConfiguration
      */
     public function testFromArray(array $data, Configuration $expectedConfiguration): void
     {
@@ -64,7 +63,7 @@ class ConfigurationTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function fromArrayDataProvider(): array
     {
@@ -120,7 +119,7 @@ class ConfigurationTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function isValidDataProvider(): array
     {
@@ -156,7 +155,8 @@ class ConfigurationTest extends TestCase
                 'initializer' => function () use ($isReadableMockArguments) {
                     PHPMockery::mock(...$isReadableMockArguments)
                         ->with('/unreadable.yml')
-                        ->andReturnFalse();
+                        ->andReturnFalse()
+                    ;
                 },
             ],
             'target empty' => [
@@ -165,7 +165,8 @@ class ConfigurationTest extends TestCase
                 'initializer' => function () use ($isReadableMockArguments) {
                     PHPMockery::mock(...$isReadableMockArguments)
                         ->with('/test.yml')
-                        ->andReturnTrue();
+                        ->andReturnTrue()
+                    ;
                 },
             ],
             'target not absolute' => [
@@ -174,7 +175,8 @@ class ConfigurationTest extends TestCase
                 'initializer' => function () use ($isReadableMockArguments) {
                     PHPMockery::mock(...$isReadableMockArguments)
                         ->with('/test.yml')
-                        ->andReturnTrue();
+                        ->andReturnTrue()
+                    ;
                 },
             ],
             'target not a directory' => [
@@ -183,11 +185,13 @@ class ConfigurationTest extends TestCase
                 'initializer' => function () use ($isReadableMockArguments, $isDirMockArguments) {
                     PHPMockery::mock(...$isReadableMockArguments)
                         ->with('/test.yml')
-                        ->andReturnTrue();
+                        ->andReturnTrue()
+                    ;
 
                     PHPMockery::mock(...$isDirMockArguments)
                         ->with('/target.yml')
-                        ->andReturnFalse();
+                        ->andReturnFalse()
+                    ;
                 },
             ],
             'target not a writable' => [
@@ -200,15 +204,18 @@ class ConfigurationTest extends TestCase
                 ) {
                     PHPMockery::mock(...$isReadableMockArguments)
                         ->with('/test.yml')
-                        ->andReturnTrue();
+                        ->andReturnTrue()
+                    ;
 
                     PHPMockery::mock(...$isDirMockArguments)
                         ->with('/target')
-                        ->andReturnTrue();
+                        ->andReturnTrue()
+                    ;
 
                     PHPMockery::mock(...$isWritableMockArguments)
                         ->with('/target')
-                        ->andReturnFalse();
+                        ->andReturnFalse()
+                    ;
                 },
             ],
             'valid' => [
@@ -221,15 +228,18 @@ class ConfigurationTest extends TestCase
                 ) {
                     PHPMockery::mock(...$isReadableMockArguments)
                         ->with('/test.yml')
-                        ->andReturnTrue();
+                        ->andReturnTrue()
+                    ;
 
                     PHPMockery::mock(...$isDirMockArguments)
                         ->with('/target')
-                        ->andReturnTrue();
+                        ->andReturnTrue()
+                    ;
 
                     PHPMockery::mock(...$isWritableMockArguments)
                         ->with('/target')
-                        ->andReturnTrue();
+                        ->andReturnTrue()
+                    ;
                 },
             ],
         ];

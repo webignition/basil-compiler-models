@@ -52,7 +52,6 @@ class SuiteManifestTest extends TestCase
     /**
      * @dataProvider getDataDataProvider
      *
-     * @param SuiteManifest $suiteManifest
      * @param array<mixed> $expectedData
      */
     public function testGetData(SuiteManifest $suiteManifest, array $expectedData): void
@@ -61,7 +60,7 @@ class SuiteManifestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getDataDataProvider(): array
     {
@@ -130,7 +129,7 @@ class SuiteManifestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getDataFromArrayDataProvider(): array
     {
@@ -175,19 +174,21 @@ class SuiteManifestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function validateDataProvider(): array
     {
         $invalidConfiguration = Mockery::mock(ConfigurationInterface::class);
         $invalidConfiguration
             ->shouldReceive('validate')
-            ->andReturn(Configuration::VALIDATION_STATE_SOURCE_NOT_READABLE);
+            ->andReturn(Configuration::VALIDATION_STATE_SOURCE_NOT_READABLE)
+        ;
 
         $validConfiguration = Mockery::mock(ConfigurationInterface::class);
         $validConfiguration
             ->shouldReceive('validate')
-            ->andReturn(Configuration::VALIDATION_STATE_VALID);
+            ->andReturn(Configuration::VALIDATION_STATE_VALID)
+        ;
 
         return [
             'configuration invalid' => [

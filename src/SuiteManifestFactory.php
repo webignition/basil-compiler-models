@@ -8,7 +8,6 @@ class SuiteManifestFactory
 {
     /**
      * @param array<mixed> $data
-     * @return SuiteManifest
      *
      * @throws InvalidSuiteManifestException
      */

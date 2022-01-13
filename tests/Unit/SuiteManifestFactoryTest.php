@@ -56,15 +56,18 @@ class SuiteManifestFactoryTest extends TestCase
 
         PHPMockery::mock($mockNamespace, 'is_readable')
             ->with($source)
-            ->andReturnTrue();
+            ->andReturnTrue()
+        ;
 
         PHPMockery::mock($mockNamespace, 'is_dir')
             ->with($target)
-            ->andReturnTrue();
+            ->andReturnTrue()
+        ;
 
         PHPMockery::mock($mockNamespace, 'is_writable')
             ->with($target)
-            ->andReturnTrue();
+            ->andReturnTrue()
+        ;
 
         $data = [
             'config' => [

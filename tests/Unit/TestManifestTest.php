@@ -87,7 +87,7 @@ class TestManifestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function validateDataProvider(): array
     {

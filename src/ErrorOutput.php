@@ -17,9 +17,6 @@ class ErrorOutput extends AbstractOutput implements ErrorOutputInterface
     private array $context;
 
     /**
-     * @param ConfigurationInterface $configuration
-     * @param string $message
-     * @param int $code
      * @param array<mixed> $context
      */
     public function __construct(ConfigurationInterface $configuration, string $message, int $code, array $context = [])
@@ -30,7 +27,6 @@ class ErrorOutput extends AbstractOutput implements ErrorOutputInterface
         $this->message = $message;
         $this->context = $context;
     }
-
 
     public function getCode(): int
     {
@@ -56,14 +52,17 @@ class ErrorOutput extends AbstractOutput implements ErrorOutputInterface
 
     /**
      * @param array<mixed> $data
-     *
-     * @return ErrorOutput
      */
     public static function fromArray(array $data): ErrorOutput
     {
         $configData = $data['config'] ?? [];
+        $configData = is_array($configData) ? $configData : [];
+
         $errorData = $data['error'] ?? [];
+        $errorData = is_array($errorData) ? $errorData : [];
+
         $contextData = $errorData['context'] ?? [];
+        $contextData = is_array($contextData) ? $contextData : [];
 
         return new ErrorOutput(
             Configuration::fromArray($configData),
