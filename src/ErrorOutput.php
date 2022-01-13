@@ -56,8 +56,13 @@ class ErrorOutput extends AbstractOutput implements ErrorOutputInterface
     public static function fromArray(array $data): ErrorOutput
     {
         $configData = $data['config'] ?? [];
+        $configData = is_array($configData) ? $configData : [];
+
         $errorData = $data['error'] ?? [];
+        $errorData = is_array($errorData) ? $errorData : [];
+
         $contextData = $errorData['context'] ?? [];
+        $contextData = is_array($contextData) ? $contextData : [];
 
         return new ErrorOutput(
             Configuration::fromArray($configData),

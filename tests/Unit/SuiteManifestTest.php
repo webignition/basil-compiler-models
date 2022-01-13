@@ -60,7 +60,7 @@ class SuiteManifestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getDataDataProvider(): array
     {
@@ -129,7 +129,7 @@ class SuiteManifestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getDataFromArrayDataProvider(): array
     {
@@ -174,7 +174,7 @@ class SuiteManifestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function validateDataProvider(): array
     {

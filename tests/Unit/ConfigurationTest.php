@@ -63,7 +63,7 @@ class ConfigurationTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function fromArrayDataProvider(): array
     {
@@ -119,7 +119,7 @@ class ConfigurationTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function isValidDataProvider(): array
     {

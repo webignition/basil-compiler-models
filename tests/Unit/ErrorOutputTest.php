@@ -61,7 +61,7 @@ class ErrorOutputTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getDataFromArrayDataProvider(): array
     {

@@ -74,7 +74,10 @@ class SuiteManifest extends AbstractOutput
     public static function fromArray(array $data): SuiteManifest
     {
         $configData = $data['config'] ?? [];
+        $configData = is_array($configData) ? $configData : [];
+
         $manifestsData = $data['manifests'] ?? [];
+        $manifestsData = is_array($manifestsData) ? $manifestsData : [];
 
         $testManifests = [];
         foreach ($manifestsData as $manifestData) {

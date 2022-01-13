@@ -93,10 +93,15 @@ class Configuration implements ConfigurationInterface
      */
     public static function fromArray(array $data): self
     {
-        return new Configuration(
-            $data['source'] ?? '',
-            $data['target'] ?? '',
-            $data['base-class'] ?? ''
-        );
+        $source = $data['source'] ?? '';
+        $source = is_string($source) ? $source : '';
+
+        $target = $data['target'] ?? '';
+        $target = is_string($target) ? $target : '';
+
+        $baseClass = $data['base-class'] ?? '';
+        $baseClass = is_string($baseClass) ? $baseClass : '';
+
+        return new Configuration($source, $target, $baseClass);
     }
 }
