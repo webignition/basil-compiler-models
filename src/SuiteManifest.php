@@ -16,7 +16,6 @@ class SuiteManifest extends AbstractOutput
     private array $testManifests;
 
     /**
-     * @param ConfigurationInterface $configuration
      * @param TestManifest[] $manifests
      */
     public function __construct(ConfigurationInterface $configuration, array $manifests = [])
@@ -71,8 +70,6 @@ class SuiteManifest extends AbstractOutput
 
     /**
      * @param array<mixed> $data
-     *
-     * @return SuiteManifest
      */
     public static function fromArray(array $data): SuiteManifest
     {

@@ -90,8 +90,6 @@ class Configuration implements ConfigurationInterface
 
     /**
      * @param array<mixed> $data
-     *
-     * @return self
      */
     public static function fromArray(array $data): self
     {

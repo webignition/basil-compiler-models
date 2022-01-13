@@ -86,8 +86,6 @@ class TestManifest
 
     /**
      * @param array<string, mixed> $data
-     *
-     * @return TestManifest
      */
     public static function fromArray(array $data): TestManifest
     {
