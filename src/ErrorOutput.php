@@ -8,24 +8,16 @@ class ErrorOutput extends AbstractOutput implements ErrorOutputInterface
 {
     public const CODE_UNKNOWN = 99;
 
-    private int $code;
-    private string $message;
-
-    /**
-     * @var array<mixed>
-     */
-    private array $context;
-
     /**
      * @param array<mixed> $context
      */
-    public function __construct(ConfigurationInterface $configuration, string $message, int $code, array $context = [])
-    {
+    public function __construct(
+        ConfigurationInterface $configuration,
+        private readonly string $message,
+        private readonly int $code,
+        private readonly array $context = []
+    ) {
         parent::__construct($configuration);
-
-        $this->code = $code;
-        $this->message = $message;
-        $this->context = $context;
     }
 
     public function getCode(): int
