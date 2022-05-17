@@ -6,11 +6,9 @@ namespace webignition\BasilCompilerModels;
 
 abstract class AbstractOutput implements OutputInterface
 {
-    private ConfigurationInterface $configuration;
-
-    public function __construct(ConfigurationInterface $configuration)
-    {
-        $this->configuration = $configuration;
+    public function __construct(
+        private readonly ConfigurationInterface $configuration
+    ) {
     }
 
     public function getConfiguration(): ConfigurationInterface

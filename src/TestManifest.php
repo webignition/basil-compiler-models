@@ -14,21 +14,12 @@ class TestManifest
     public const VALIDATION_STATE_SOURCE_EMPTY = 3;
     public const VALIDATION_STATE_TARGET_EMPTY = 4;
 
-    private string $source;
-    private string $target;
-    private TestConfigurationInterface $configuration;
-    private int $stepCount;
-
     public function __construct(
-        TestConfigurationInterface $configuration,
-        string $source,
-        string $target,
-        int $stepCount
+        private readonly TestConfigurationInterface $configuration,
+        private readonly string $source,
+        private readonly string $target,
+        private readonly int $stepCount
     ) {
-        $this->configuration = $configuration;
-        $this->source = $source;
-        $this->target = $target;
-        $this->stepCount = $stepCount;
     }
 
     public function getSource(): string

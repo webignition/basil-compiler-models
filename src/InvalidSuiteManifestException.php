@@ -6,18 +6,14 @@ namespace webignition\BasilCompilerModels;
 
 class InvalidSuiteManifestException extends \Exception
 {
-    private SuiteManifest $suiteManifest;
-    private int $validationState;
-
-    public function __construct(SuiteManifest $suiteManifest, int $validationState)
-    {
+    public function __construct(
+        private readonly SuiteManifest $suiteManifest,
+        private readonly int $validationState
+    ) {
         parent::__construct(sprintf(
             'Invalid suite manifest. Validation state %s',
             $validationState
         ));
-
-        $this->suiteManifest = $suiteManifest;
-        $this->validationState = $validationState;
     }
 
     public function getSuiteManifest(): SuiteManifest
