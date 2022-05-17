@@ -15,15 +15,11 @@ class Configuration implements ConfigurationInterface
     public const VALIDATION_STATE_SOURCE_EMPTY = 7;
     public const VALIDATION_STATE_TARGET_EMPTY = 8;
 
-    private string $source;
-    private string $target;
-    private string $baseClass;
-
-    public function __construct(string $source, string $target, string $baseClass)
-    {
-        $this->source = $source;
-        $this->target = $target;
-        $this->baseClass = $baseClass;
+    public function __construct(
+        private readonly string $source,
+        private readonly string $target,
+        private readonly string $baseClass
+    ) {
     }
 
     public function getSource(): string
