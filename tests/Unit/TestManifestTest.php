@@ -13,7 +13,12 @@ class TestManifestTest extends TestCase
 {
     private const SOURCE = 'test.yml';
     private const TARGET = 'GeneratedTest.php';
-    private const STEP_COUNT = 9;
+    private const STEP_COUNT = 3;
+    private const STEP_NAMES = [
+        'step one',
+        'step two',
+        'step three',
+    ];
 
     private TestManifest $manifest;
     private TestConfigurationInterface $configuration;
@@ -23,7 +28,13 @@ class TestManifestTest extends TestCase
         parent::setUp();
 
         $this->configuration = new TestConfiguration('chrome', 'http://example.com');
-        $this->manifest = new TestManifest($this->configuration, self::SOURCE, self::TARGET, self::STEP_COUNT);
+        $this->manifest = new TestManifest(
+            $this->configuration,
+            self::SOURCE,
+            self::TARGET,
+            self::STEP_COUNT,
+            self::STEP_NAMES
+        );
     }
 
     public function testGetSource(): void
@@ -46,6 +57,11 @@ class TestManifestTest extends TestCase
         self::assertSame(self::STEP_COUNT, $this->manifest->getStepCount());
     }
 
+    public function testGetStepNames(): void
+    {
+        self::assertSame(self::STEP_NAMES, $this->manifest->getStepNames());
+    }
+
     public function testGetData(): void
     {
         self::assertSame(
@@ -57,6 +73,7 @@ class TestManifestTest extends TestCase
                 'source' => self::SOURCE,
                 'target' => self::TARGET,
                 'step_count' => self::STEP_COUNT,
+                'step_names' => self::STEP_NAMES,
             ],
             $this->manifest->getData()
         );
@@ -65,7 +82,13 @@ class TestManifestTest extends TestCase
     public function testFromArray(): void
     {
         self::assertEquals(
-            new TestManifest($this->configuration, self::SOURCE, self::TARGET, self::STEP_COUNT),
+            new TestManifest(
+                $this->configuration,
+                self::SOURCE,
+                self::TARGET,
+                self::STEP_COUNT,
+                self::STEP_NAMES
+            ),
             TestManifest::fromArray([
                 'config' => [
                     'browser' => 'chrome',
@@ -74,6 +97,7 @@ class TestManifestTest extends TestCase
                 'source' => self::SOURCE,
                 'target' => self::TARGET,
                 'step_count' => self::STEP_COUNT,
+                'step_names' => self::STEP_NAMES,
             ])
         );
     }
@@ -97,7 +121,8 @@ class TestManifestTest extends TestCase
                     new TestConfiguration('', ''),
                     'source',
                     'target',
-                    self::STEP_COUNT
+                    self::STEP_COUNT,
+                    self::STEP_NAMES
                 ),
                 'expectedValidationState' => TestManifest::VALIDATION_STATE_CONFIGURATION_INVALID,
             ],
@@ -106,7 +131,8 @@ class TestManifestTest extends TestCase
                     new TestConfiguration('chrome', 'http://example.com'),
                     '',
                     'target',
-                    self::STEP_COUNT
+                    self::STEP_COUNT,
+                    self::STEP_NAMES
                 ),
                 'expectedValidationState' => TestManifest::VALIDATION_STATE_SOURCE_EMPTY,
             ],
@@ -115,7 +141,8 @@ class TestManifestTest extends TestCase
                     new TestConfiguration('chrome', 'http://example.com'),
                     'source',
                     '',
-                    self::STEP_COUNT
+                    self::STEP_COUNT,
+                    self::STEP_NAMES
                 ),
                 'expectedValidationState' => TestManifest::VALIDATION_STATE_TARGET_EMPTY,
             ],
@@ -124,7 +151,8 @@ class TestManifestTest extends TestCase
                     new TestConfiguration('chrome', 'http://example.com'),
                     'source',
                     'target',
-                    self::STEP_COUNT
+                    self::STEP_COUNT,
+                    self::STEP_NAMES
                 ),
                 'expectedValidationState' => TestManifest::VALIDATION_STATE_VALID,
             ],

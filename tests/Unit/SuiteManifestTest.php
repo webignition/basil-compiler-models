@@ -33,13 +33,15 @@ class SuiteManifestTest extends TestCase
                 new TestModelConfiguration('chrome', 'http://example.com'),
                 self::SUITE_SOURCE . '/test1.yml',
                 self::SUITE_TARGET . '/GeneratedTest1.php',
-                1
+                1,
+                ['step 1']
             ),
             new TestManifest(
                 new TestModelConfiguration('firefox', 'http://example.com'),
                 self::SUITE_SOURCE . '/test2.yml',
                 self::SUITE_TARGET . '/GeneratedTest2.php',
-                2
+                2,
+                ['step 1', 'step 2']
             ),
         ];
 
@@ -70,13 +72,15 @@ class SuiteManifestTest extends TestCase
                 new TestModelConfiguration('chrome', 'http://example.com'),
                 self::SUITE_SOURCE . '/test1.yml',
                 self::SUITE_TARGET . '/GeneratedTest1.php',
-                3
+                3,
+                ['step 1', 'step 2', 'step 3']
             ),
             new TestManifest(
                 new TestModelConfiguration('firefox', 'http://example.com'),
                 self::SUITE_SOURCE . '/test2.yml',
                 self::SUITE_TARGET . '/GeneratedTest2.php',
-                4
+                4,
+                ['step 1', 'step 2', 'step 3', 'step 4']
             ),
         ];
 
@@ -101,6 +105,7 @@ class SuiteManifestTest extends TestCase
                             'source' => self::SUITE_SOURCE . '/test1.yml',
                             'target' => self::SUITE_TARGET . '/GeneratedTest1.php',
                             'step_count' => 3,
+                            'step_names' => ['step 1', 'step 2', 'step 3']
                         ],
                         [
                             'config' => [
@@ -110,6 +115,7 @@ class SuiteManifestTest extends TestCase
                             'source' => self::SUITE_SOURCE . '/test2.yml',
                             'target' => self::SUITE_TARGET . '/GeneratedTest2.php',
                             'step_count' => 4,
+                            'step_names' => ['step 1', 'step 2', 'step 3', 'step 4']
                         ],
                     ],
                 ],
@@ -146,19 +152,22 @@ class SuiteManifestTest extends TestCase
                         $testConfiguration,
                         self::SUITE_SOURCE . '/test1.yml',
                         self::SUITE_TARGET . '/GeneratedTest1.php',
-                        5
+                        5,
+                        ['step 1', 'step 2', 'step 3', 'step 4', 'step 5']
                     ),
                     new TestManifest(
                         $testConfiguration,
                         self::SUITE_SOURCE . '/test2.yml',
                         self::SUITE_TARGET . '/GeneratedTest2.php',
-                        6
+                        6,
+                        ['step 1', 'step 2', 'step 3', 'step 4', 'step 5', 'step 6']
                     ),
                     new TestManifest(
                         $testConfiguration,
                         self::SUITE_SOURCE . '/test3.yml',
                         self::SUITE_TARGET . '/GeneratedTest3.php',
-                        7
+                        7,
+                        ['step 1', 'step 2', 'step 3', 'step 4', 'step 5', 'step 6', 'step 7']
                     ),
                 ]),
             ],
@@ -206,7 +215,8 @@ class SuiteManifestTest extends TestCase
                             new TestConfiguration('', ''),
                             '',
                             '',
-                            8
+                            8,
+                            ['step 1', 'step 2', 'step 3', 'step 4', 'step 5', 'step 6', 'step 7', 'step 8']
                         ),
                     ]
                 ),
@@ -220,7 +230,8 @@ class SuiteManifestTest extends TestCase
                             new TestConfiguration('chrome', 'http:;//example.com'),
                             self::SUITE_SOURCE . '/test.yml',
                             self::SUITE_TARGET . '/GeneratedTest.php',
-                            9
+                            9,
+                            ['step 1', 'step 2', 'step 3', 'step 4', 'step 5', 'step 6', 'step 7', 'step 8', 'step 9']
                         ),
                     ]
                 ),

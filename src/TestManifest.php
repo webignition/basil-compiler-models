@@ -14,11 +14,15 @@ class TestManifest
     public const VALIDATION_STATE_SOURCE_EMPTY = 3;
     public const VALIDATION_STATE_TARGET_EMPTY = 4;
 
+    /**
+     * @param non-empty-string[] $stepNames
+     */
     public function __construct(
         private readonly TestConfigurationInterface $configuration,
         private readonly string $source,
         private readonly string $target,
-        private readonly int $stepCount
+        private readonly int $stepCount,
+        private readonly array $stepNames,
     ) {
     }
 
@@ -40,6 +44,14 @@ class TestManifest
     public function getStepCount(): int
     {
         return $this->stepCount;
+    }
+
+    /**
+     * @return non-empty-string[]
+     */
+    public function getStepNames(): array
+    {
+        return $this->stepNames;
     }
 
     public function validate(): int
@@ -72,6 +84,7 @@ class TestManifest
             'source' => $this->source,
             'target' => $this->target,
             'step_count' => $this->stepCount,
+            'step_names' => $this->stepNames,
         ];
     }
 
@@ -92,11 +105,22 @@ class TestManifest
         $stepCount = $data['step_count'] ?? 0;
         $stepCount = is_int($stepCount) ? $stepCount : 0;
 
+        $stepNames = $data['step_names'] ?? [];
+        $stepNames = is_array($stepNames) ? $stepNames : [];
+
+        $filteredStepNames = [];
+        foreach ($stepNames as $stepName) {
+            if (is_string($stepName) && '' !== $stepName) {
+                $filteredStepNames[] = $stepName;
+            }
+        }
+
         return new TestManifest(
             new TestConfiguration($configData['browser'] ?? '', $configData['url'] ?? ''),
             $source,
             $target,
-            $stepCount
+            $stepCount,
+            $filteredStepNames
         );
     }
 }
