@@ -21,7 +21,6 @@ class TestManifest
         private readonly TestConfigurationInterface $configuration,
         private readonly string $source,
         private readonly string $target,
-        private readonly int $stepCount,
         private readonly array $stepNames,
     ) {
     }
@@ -39,11 +38,6 @@ class TestManifest
     public function getConfiguration(): TestConfigurationInterface
     {
         return $this->configuration;
-    }
-
-    public function getStepCount(): int
-    {
-        return $this->stepCount;
     }
 
     /**
@@ -83,7 +77,6 @@ class TestManifest
             ],
             'source' => $this->source,
             'target' => $this->target,
-            'step_count' => $this->stepCount,
             'step_names' => $this->stepNames,
         ];
     }
@@ -102,9 +95,6 @@ class TestManifest
         $target = $data['target'] ?? '';
         $target = is_string($target) ? $target : '';
 
-        $stepCount = $data['step_count'] ?? 0;
-        $stepCount = is_int($stepCount) ? $stepCount : 0;
-
         $stepNames = $data['step_names'] ?? [];
         $stepNames = is_array($stepNames) ? $stepNames : [];
 
@@ -119,7 +109,6 @@ class TestManifest
             new TestConfiguration($configData['browser'] ?? '', $configData['url'] ?? ''),
             $source,
             $target,
-            $stepCount,
             $filteredStepNames
         );
     }
