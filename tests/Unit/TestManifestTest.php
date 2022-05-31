@@ -6,8 +6,8 @@ namespace webignition\BasilCompilerModels\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilerModels\TestManifest;
-use webignition\BasilModels\Test\Configuration as TestConfiguration;
-use webignition\BasilModels\Test\ConfigurationInterface as TestConfigurationInterface;
+use webignition\BasilModels\Model\Test\Configuration as TestConfiguration;
+use webignition\BasilModels\Model\Test\ConfigurationInterface as TestConfigurationInterface;
 
 class TestManifestTest extends TestCase
 {

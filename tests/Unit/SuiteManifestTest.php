@@ -10,8 +10,8 @@ use webignition\BasilCompilerModels\Configuration;
 use webignition\BasilCompilerModels\ConfigurationInterface;
 use webignition\BasilCompilerModels\SuiteManifest;
 use webignition\BasilCompilerModels\TestManifest;
-use webignition\BasilModels\Test\Configuration as TestConfiguration;
-use webignition\BasilModels\Test\Configuration as TestModelConfiguration;
+use webignition\BasilModels\Model\Test\Configuration as TestConfiguration;
+use webignition\BasilModels\Model\Test\Configuration as TestModelConfiguration;
 
 class SuiteManifestTest extends TestCase
 {
