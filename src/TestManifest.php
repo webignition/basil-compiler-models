@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilerModels;
 
-use webignition\BasilModels\Test\Configuration as TestConfiguration;
-use webignition\BasilModels\Test\ConfigurationInterface as TestConfigurationInterface;
+use webignition\BasilModels\Model\Test\Configuration as TestConfiguration;
+use webignition\BasilModels\Model\Test\ConfigurationInterface as TestConfigurationInterface;
 
 class TestManifest
 {
