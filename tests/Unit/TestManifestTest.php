@@ -6,11 +6,11 @@ namespace webignition\BasilCompilerModels\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilerModels\TestManifest;
-use webignition\BasilModels\Model\Test\Configuration as TestConfiguration;
-use webignition\BasilModels\Model\Test\ConfigurationInterface as TestConfigurationInterface;
 
 class TestManifestTest extends TestCase
 {
+    private const BROWSER = 'chrome';
+    private const URL = 'https://example.com';
     private const SOURCE = 'test.yml';
     private const TARGET = 'GeneratedTest.php';
     private const STEP_NAMES = [
@@ -20,15 +20,14 @@ class TestManifestTest extends TestCase
     ];
 
     private TestManifest $manifest;
-    private TestConfigurationInterface $configuration;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->configuration = new TestConfiguration('chrome', 'http://example.com');
         $this->manifest = new TestManifest(
-            $this->configuration,
+            self::BROWSER,
+            self::URL,
             self::SOURCE,
             self::TARGET,
             self::STEP_NAMES
@@ -45,9 +44,14 @@ class TestManifestTest extends TestCase
         self::assertSame(self::TARGET, $this->manifest->getTarget());
     }
 
-    public function testGetConfiguration(): void
+    public function testGetBrowser(): void
     {
-        self::assertSame($this->configuration, $this->manifest->getConfiguration());
+        self::assertSame(self::BROWSER, $this->manifest->getBrowser());
+    }
+
+    public function testGetUrl(): void
+    {
+        self::assertSame(self::URL, $this->manifest->getUrl());
     }
 
     public function testGetStepNames(): void
@@ -60,8 +64,8 @@ class TestManifestTest extends TestCase
         self::assertSame(
             [
                 'config' => [
-                    'browser' => 'chrome',
-                    'url' => 'http://example.com',
+                    'browser' => self::BROWSER,
+                    'url' => self::URL,
                 ],
                 'source' => self::SOURCE,
                 'target' => self::TARGET,
@@ -75,15 +79,16 @@ class TestManifestTest extends TestCase
     {
         self::assertEquals(
             new TestManifest(
-                $this->configuration,
+                self::BROWSER,
+                self::URL,
                 self::SOURCE,
                 self::TARGET,
                 self::STEP_NAMES
             ),
             TestManifest::fromArray([
                 'config' => [
-                    'browser' => 'chrome',
-                    'url' => 'http://example.com',
+                    'browser' => self::BROWSER,
+                    'url' => self::URL,
                 ],
                 'source' => self::SOURCE,
                 'target' => self::TARGET,
@@ -106,28 +111,41 @@ class TestManifestTest extends TestCase
     public function validateDataProvider(): array
     {
         return [
-            'configuration invalid' => [
+            'browser invalid' => [
                 'testManifest' => new TestManifest(
-                    new TestConfiguration('', ''),
-                    'source',
-                    'target',
+                    '',
+                    self::URL,
+                    self::SOURCE,
+                    self::TARGET,
                     self::STEP_NAMES
                 ),
-                'expectedValidationState' => TestManifest::VALIDATION_STATE_CONFIGURATION_INVALID,
+                'expectedValidationState' => TestManifest::VALIDATION_STATE_BROWSER_EMPTY,
+            ],
+            'url invalid' => [
+                'testManifest' => new TestManifest(
+                    self::BROWSER,
+                    '',
+                    self::SOURCE,
+                    self::TARGET,
+                    self::STEP_NAMES
+                ),
+                'expectedValidationState' => TestManifest::VALIDATION_STATE_URL_EMPTY,
             ],
             'source empty' => [
                 'testManifest' => new TestManifest(
-                    new TestConfiguration('chrome', 'http://example.com'),
+                    self::BROWSER,
+                    self::URL,
                     '',
-                    'target',
+                    self::TARGET,
                     self::STEP_NAMES
                 ),
                 'expectedValidationState' => TestManifest::VALIDATION_STATE_SOURCE_EMPTY,
             ],
             'target empty' => [
                 'testManifest' => new TestManifest(
-                    new TestConfiguration('chrome', 'http://example.com'),
-                    'source',
+                    self::BROWSER,
+                    self::URL,
+                    self::SOURCE,
                     '',
                     self::STEP_NAMES
                 ),
@@ -135,9 +153,10 @@ class TestManifestTest extends TestCase
             ],
             'valid' => [
                 'testManifest' => new TestManifest(
-                    new TestConfiguration('chrome', 'http://example.com'),
-                    'source',
-                    'target',
+                    self::BROWSER,
+                    self::URL,
+                    self::URL,
+                    self::TARGET,
                     self::STEP_NAMES
                 ),
                 'expectedValidationState' => TestManifest::VALIDATION_STATE_VALID,

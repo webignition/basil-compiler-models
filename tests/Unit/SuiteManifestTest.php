@@ -10,8 +10,6 @@ use webignition\BasilCompilerModels\Configuration;
 use webignition\BasilCompilerModels\ConfigurationInterface;
 use webignition\BasilCompilerModels\SuiteManifest;
 use webignition\BasilCompilerModels\TestManifest;
-use webignition\BasilModels\Model\Test\Configuration as TestConfiguration;
-use webignition\BasilModels\Model\Test\Configuration as TestModelConfiguration;
 
 class SuiteManifestTest extends TestCase
 {
@@ -30,13 +28,15 @@ class SuiteManifestTest extends TestCase
     {
         $testManifests = [
             new TestManifest(
-                new TestModelConfiguration('chrome', 'http://example.com'),
+                'chrome',
+                'http://example.com',
                 self::SUITE_SOURCE . '/test1.yml',
                 self::SUITE_TARGET . '/GeneratedTest1.php',
                 ['step 1']
             ),
             new TestManifest(
-                new TestModelConfiguration('firefox', 'http://example.com'),
+                'firefox',
+                'http://example.com',
                 self::SUITE_SOURCE . '/test2.yml',
                 self::SUITE_TARGET . '/GeneratedTest2.php',
                 ['step 1', 'step 2']
@@ -67,13 +67,15 @@ class SuiteManifestTest extends TestCase
         $suiteConfiguration = $this->createSuiteConfiguration();
         $testManifests = [
             new TestManifest(
-                new TestModelConfiguration('chrome', 'http://example.com'),
+                'chrome',
+                'http://example.com',
                 self::SUITE_SOURCE . '/test1.yml',
                 self::SUITE_TARGET . '/GeneratedTest1.php',
                 ['step 1', 'step 2', 'step 3']
             ),
             new TestManifest(
-                new TestModelConfiguration('firefox', 'http://example.com'),
+                'firefox',
+                'http://example.com',
                 self::SUITE_SOURCE . '/test2.yml',
                 self::SUITE_TARGET . '/GeneratedTest2.php',
                 ['step 1', 'step 2', 'step 3', 'step 4']
@@ -134,7 +136,6 @@ class SuiteManifestTest extends TestCase
     public function getDataFromArrayDataProvider(): array
     {
         $suiteConfiguration = $this->createSuiteConfiguration();
-        $testConfiguration = new TestModelConfiguration('chrome', 'http://example.com');
 
         return [
             'empty generated test output collection' => [
@@ -143,19 +144,22 @@ class SuiteManifestTest extends TestCase
             'populated generated test output collection' => [
                 'suiteManifest' => new SuiteManifest($suiteConfiguration, [
                     new TestManifest(
-                        $testConfiguration,
+                        'chrome',
+                        'http://example.com',
                         self::SUITE_SOURCE . '/test1.yml',
                         self::SUITE_TARGET . '/GeneratedTest1.php',
                         ['step 1', 'step 2', 'step 3', 'step 4', 'step 5']
                     ),
                     new TestManifest(
-                        $testConfiguration,
+                        'chrome',
+                        'http://example.com',
                         self::SUITE_SOURCE . '/test2.yml',
                         self::SUITE_TARGET . '/GeneratedTest2.php',
                         ['step 1', 'step 2', 'step 3', 'step 4', 'step 5', 'step 6']
                     ),
                     new TestManifest(
-                        $testConfiguration,
+                        'chrome',
+                        'http://example.com',
                         self::SUITE_SOURCE . '/test3.yml',
                         self::SUITE_TARGET . '/GeneratedTest3.php',
                         ['step 1', 'step 2', 'step 3', 'step 4', 'step 5', 'step 6', 'step 7']
@@ -203,7 +207,8 @@ class SuiteManifestTest extends TestCase
                     $validConfiguration,
                     [
                         new TestManifest(
-                            new TestConfiguration('', ''),
+                            '',
+                            '',
                             '',
                             '',
                             ['step 1', 'step 2', 'step 3', 'step 4', 'step 5', 'step 6', 'step 7', 'step 8']
@@ -217,7 +222,8 @@ class SuiteManifestTest extends TestCase
                     $validConfiguration,
                     [
                         new TestManifest(
-                            new TestConfiguration('chrome', 'http:;//example.com'),
+                            'chrome',
+                            'http://example.com',
                             self::SUITE_SOURCE . '/test.yml',
                             self::SUITE_TARGET . '/GeneratedTest.php',
                             ['step 1', 'step 2', 'step 3', 'step 4', 'step 5', 'step 6', 'step 7', 'step 8', 'step 9']
