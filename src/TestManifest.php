@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilerModels;
 
-use webignition\BasilModels\Model\Test\Configuration as TestConfiguration;
-use webignition\BasilModels\Model\Test\ConfigurationInterface as TestConfigurationInterface;
-
 class TestManifest
 {
     public const VALIDATION_STATE_VALID = 1;
     public const VALIDATION_STATE_CONFIGURATION_INVALID = 2;
     public const VALIDATION_STATE_SOURCE_EMPTY = 3;
     public const VALIDATION_STATE_TARGET_EMPTY = 4;
+    public const VALIDATION_STATE_BROWSER_EMPTY = 5;
+    public const VALIDATION_STATE_URL_EMPTY = 6;
 
     /**
      * @param non-empty-string[] $stepNames
      */
     public function __construct(
-        private readonly TestConfigurationInterface $configuration,
+        private readonly string $browser,
+        private readonly string $url,
         private readonly string $source,
         private readonly string $target,
         private readonly array $stepNames,
@@ -35,9 +35,14 @@ class TestManifest
         return $this->target;
     }
 
-    public function getConfiguration(): TestConfigurationInterface
+    public function getBrowser(): string
     {
-        return $this->configuration;
+        return $this->browser;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
     }
 
     /**
@@ -50,8 +55,12 @@ class TestManifest
 
     public function validate(): int
     {
-        if (TestConfigurationInterface::VALIDATION_STATE_VALID !== $this->configuration->validate()) {
-            return self::VALIDATION_STATE_CONFIGURATION_INVALID;
+        if ('' === trim($this->browser)) {
+            return self::VALIDATION_STATE_BROWSER_EMPTY;
+        }
+
+        if ('' === trim($this->url)) {
+            return self::VALIDATION_STATE_URL_EMPTY;
         }
 
         if ('' === trim($this->source)) {
@@ -72,8 +81,8 @@ class TestManifest
     {
         return [
             'config' => [
-                'browser' => $this->configuration->getBrowser(),
-                'url' => $this->configuration->getUrl(),
+                'browser' => $this->browser,
+                'url' => $this->url,
             ],
             'source' => $this->source,
             'target' => $this->target,
@@ -106,7 +115,8 @@ class TestManifest
         }
 
         return new TestManifest(
-            new TestConfiguration($configData['browser'] ?? '', $configData['url'] ?? ''),
+            $configData['browser'] ?? '',
+            $configData['url'] ?? '',
             $source,
             $target,
             $filteredStepNames
