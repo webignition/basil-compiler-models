@@ -12,12 +12,12 @@ interface ConfigurationInterface
 
     public function getBaseClass(): string;
 
-    /**
-     * @return array<string, string>
-     */
-    public function getData(): array;
-
     public function validate(): int;
+
+    /**
+     * @return array{source:string, target:string, base-class:string}
+     */
+    public function toArray(): array;
 
     /**
      * @param array<mixed> $data

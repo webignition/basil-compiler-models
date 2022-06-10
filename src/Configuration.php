@@ -37,18 +37,6 @@ class Configuration implements ConfigurationInterface
         return $this->baseClass;
     }
 
-    /**
-     * @return array<string, string>
-     */
-    public function getData(): array
-    {
-        return [
-            'source' => $this->source,
-            'target' => $this->target,
-            'base-class' => $this->baseClass,
-        ];
-    }
-
     public function validate(): int
     {
         if ('' === $this->source) {
@@ -82,6 +70,15 @@ class Configuration implements ConfigurationInterface
         }
 
         return self::VALIDATION_STATE_VALID;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'source' => $this->source,
+            'target' => $this->target,
+            'base-class' => $this->baseClass,
+        ];
     }
 
     /**

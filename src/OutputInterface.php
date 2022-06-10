@@ -6,10 +6,13 @@ namespace webignition\BasilCompilerModels;
 
 interface OutputInterface
 {
-    public function getConfiguration(): ConfigurationInterface;
-
     /**
      * @return array<mixed>
      */
-    public function getData(): array;
+    public function toArray(): array;
+
+    /**
+     * @param array<mixed> $data
+     */
+    public static function fromArray(array $data): self;
 }
