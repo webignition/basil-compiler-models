@@ -40,63 +40,34 @@ class ConfigurationTest extends TestCase
         self::assertSame(self::BASE_CLASS, $this->configuration->getBaseClass());
     }
 
-    public function testGetData(): void
-    {
-        self::assertSame(
-            [
-                'source' => self::SOURCE,
-                'target' => self::TARGET,
-                'base-class' => self::BASE_CLASS,
-            ],
-            $this->configuration->getData()
-        );
-    }
-
     /**
-     * @dataProvider fromArrayDataProvider
-     *
-     * @param array<mixed> $data
+     * @dataProvider toArrayFromArrayDataProvider
      */
-    public function testFromArray(array $data, Configuration $expectedConfiguration): void
+    public function testToArrayFromArray(Configuration $configuration): void
     {
-        self::assertEquals($expectedConfiguration, Configuration::fromArray($data));
+        self::assertEquals($configuration, Configuration::fromArray($configuration->toArray()));
     }
 
     /**
      * @return array<mixed>
      */
-    public function fromArrayDataProvider(): array
+    public function toArrayFromArrayDataProvider(): array
     {
         return [
             'empty' => [
-                'data' => [],
-                'expectedConfiguration' => new Configuration('', '', '')
+                'configuration' => new Configuration('', '', '')
             ],
             'source only' => [
-                'data' => [
-                    'source' => self::SOURCE,
-                ],
-                'expectedConfiguration' => new Configuration(self::SOURCE, '', '')
+                'configuration' => new Configuration(self::SOURCE, '', '')
             ],
             'target only' => [
-                'data' => [
-                    'target' => self::TARGET,
-                ],
-                'expectedConfiguration' => new Configuration('', self::TARGET, '')
+                'configuration' => new Configuration('', self::TARGET, '')
             ],
             'base-class only' => [
-                'data' => [
-                    'base-class' => self::BASE_CLASS,
-                ],
-                'expectedConfiguration' => new Configuration('', '', self::BASE_CLASS)
+                'configuration' => new Configuration('', '', self::BASE_CLASS)
             ],
             'populated' => [
-                'data' => [
-                    'source' => self::SOURCE,
-                    'target' => self::TARGET,
-                    'base-class' => self::BASE_CLASS,
-                ],
-                'expectedConfiguration' => new Configuration(self::SOURCE, self::TARGET, self::BASE_CLASS)
+                'configuration' => new Configuration(self::SOURCE, self::TARGET, self::BASE_CLASS)
             ],
         ];
     }

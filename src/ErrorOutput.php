@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilerModels;
 
-class ErrorOutput extends AbstractOutput implements ErrorOutputInterface
+class ErrorOutput implements ErrorOutputInterface
 {
     public const CODE_UNKNOWN = 99;
 
@@ -12,12 +12,10 @@ class ErrorOutput extends AbstractOutput implements ErrorOutputInterface
      * @param array<mixed> $context
      */
     public function __construct(
-        ConfigurationInterface $configuration,
         private readonly string $message,
         private readonly int $code,
         private readonly array $context = []
     ) {
-        parent::__construct($configuration);
     }
 
     public function getCode(): int
@@ -25,21 +23,18 @@ class ErrorOutput extends AbstractOutput implements ErrorOutputInterface
         return $this->code;
     }
 
-    public function getData(): array
+    public function toArray(): array
     {
-        $errorData = [
+        $data = [
             'message' => $this->message,
             'code' => $this->getCode(),
         ];
 
         if ([] !== $this->context) {
-            $errorData['context'] = $this->context;
+            $data['context'] = $this->context;
         }
 
-        $serializedData = parent::getData();
-        $serializedData['error'] = $errorData;
-
-        return $serializedData;
+        return $data;
     }
 
     /**
@@ -47,20 +42,15 @@ class ErrorOutput extends AbstractOutput implements ErrorOutputInterface
      */
     public static function fromArray(array $data): ErrorOutput
     {
-        $configData = $data['config'] ?? [];
-        $configData = is_array($configData) ? $configData : [];
+        $message = $data['message'] ?? '';
+        $message = is_string($message) ? $message : '';
 
-        $errorData = $data['error'] ?? [];
-        $errorData = is_array($errorData) ? $errorData : [];
+        $code = $data['code'] ?? self::CODE_UNKNOWN;
+        $code = is_int($code) ? $code : self::CODE_UNKNOWN;
 
-        $contextData = $errorData['context'] ?? [];
-        $contextData = is_array($contextData) ? $contextData : [];
+        $context = $data['context'] ?? [];
+        $context = is_array($context) ? $context : [];
 
-        return new ErrorOutput(
-            Configuration::fromArray($configData),
-            $errorData['message'] ?? '',
-            (int) ($errorData['code'] ?? self::CODE_UNKNOWN),
-            $contextData
-        );
+        return new ErrorOutput($message, $code, $context);
     }
 }

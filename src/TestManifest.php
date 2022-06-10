@@ -7,7 +7,6 @@ namespace webignition\BasilCompilerModels;
 class TestManifest
 {
     public const VALIDATION_STATE_VALID = 1;
-    public const VALIDATION_STATE_CONFIGURATION_INVALID = 2;
     public const VALIDATION_STATE_SOURCE_EMPTY = 3;
     public const VALIDATION_STATE_TARGET_EMPTY = 4;
     public const VALIDATION_STATE_BROWSER_EMPTY = 5;
@@ -77,7 +76,7 @@ class TestManifest
     /**
      * @return array<string, mixed>
      */
-    public function getData(): array
+    public function toArray(): array
     {
         return [
             'config' => [
@@ -91,7 +90,7 @@ class TestManifest
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param array<mixed> $data
      */
     public static function fromArray(array $data): TestManifest
     {
