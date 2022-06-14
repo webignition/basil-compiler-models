@@ -42,7 +42,7 @@ class TestManifestCollection implements OutputInterface
         return $data;
     }
 
-    public static function fromArray(array $data): OutputInterface
+    public static function fromArray(array $data): TestManifestCollection
     {
         $testManifests = [];
 
