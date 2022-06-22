@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilerModels\Factory;
 
-use webignition\BasilCompilerModels\Model\TestManifest;
+use webignition\BasilCompilerModels\Exception\InvalidTestManifestException;
 use webignition\BasilCompilerModels\Model\TestManifestCollection;
 
 class TestManifestCollectionFactory
@@ -16,6 +16,8 @@ class TestManifestCollectionFactory
 
     /**
      * @param array<mixed> $data
+     *
+     * @throws InvalidTestManifestException
      */
     public function create(array $data): TestManifestCollection
     {
@@ -23,11 +25,7 @@ class TestManifestCollectionFactory
 
         foreach ($data as $value) {
             if (is_array($value)) {
-                $testManifest = $this->testManifestFactory->create($value);
-
-                if (TestManifest::VALIDATION_STATE_VALID === $testManifest->validate()) {
-                    $testManifests[] = $testManifest;
-                }
+                $testManifests[] = $this->testManifestFactory->create($value);
             }
         }
 

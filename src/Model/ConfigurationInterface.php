@@ -12,8 +12,6 @@ interface ConfigurationInterface
 
     public function getBaseClass(): string;
 
-    public function validate(): int;
-
     /**
      * @return array{source:string, target:string, base-class:string}
      */
