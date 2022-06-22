@@ -92,31 +92,4 @@ class TestManifestTest extends TestCase
             ],
         ];
     }
-
-    /**
-     * @dataProvider validateDataProvider
-     */
-    public function testValidate(TestManifest $testManifest, int $expectedValidationState): void
-    {
-        self::assertSame($expectedValidationState, $testManifest->validate());
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function validateDataProvider(): array
-    {
-        return [
-            'valid' => [
-                'testManifest' => new TestManifest(
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    ['step one']
-                ),
-                'expectedValidationState' => TestManifest::VALIDATION_STATE_VALID,
-            ],
-        ];
-    }
 }
