@@ -38,7 +38,10 @@ class TestManifestFactory
         }
 
         $target = $data['target'] ?? '';
-        $target = is_string($target) ? $target : '';
+        $target = is_string($target) ? trim($target) : '';
+        if ('' === $target) {
+            throw InvalidTestManifestException::createForEmptyTarget();
+        }
 
         $stepNames = $data['step_names'] ?? [];
         $stepNames = is_array($stepNames) ? $stepNames : [];

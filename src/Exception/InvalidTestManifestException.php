@@ -9,6 +9,7 @@ class InvalidTestManifestException extends \Exception
     public const CODE_CONFIG_BROWSER_EMPTY = 100;
     public const CODE_CONFIG_URL_EMPTY = 101;
     public const CODE_SOURCE_EMPTY = 200;
+    public const CODE_TARGET_EMPTY = 200;
 
     public static function createForEmptyBrowser(): InvalidTestManifestException
     {
@@ -23,5 +24,10 @@ class InvalidTestManifestException extends \Exception
     public static function createForEmptySource(): InvalidTestManifestException
     {
         return new InvalidTestManifestException('source empty', self::CODE_SOURCE_EMPTY);
+    }
+
+    public static function createForEmptyTarget(): InvalidTestManifestException
+    {
+        return new InvalidTestManifestException('source empty', self::CODE_TARGET_EMPTY);
     }
 }

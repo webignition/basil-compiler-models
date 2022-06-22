@@ -7,13 +7,12 @@ namespace webignition\BasilCompilerModels\Model;
 class TestManifest
 {
     public const VALIDATION_STATE_VALID = 1;
-    public const VALIDATION_STATE_SOURCE_EMPTY = 3;
-    public const VALIDATION_STATE_TARGET_EMPTY = 4;
 
     /**
      * @param non-empty-string   $browser
      * @param non-empty-string   $url
      * @param non-empty-string   $source
+     * @param non-empty-string   $target
      * @param non-empty-string[] $stepNames
      */
     public function __construct(
@@ -33,6 +32,9 @@ class TestManifest
         return $this->source;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getTarget(): string
     {
         return $this->target;
@@ -64,10 +66,6 @@ class TestManifest
 
     public function validate(): int
     {
-        if ('' === trim($this->target)) {
-            return self::VALIDATION_STATE_TARGET_EMPTY;
-        }
-
         return self::VALIDATION_STATE_VALID;
     }
 
@@ -75,7 +73,7 @@ class TestManifest
      * @return array{
      *     config: array{browser: non-empty-string, url: non-empty-string},
      *     source: non-empty-string,
-     *     target: string,
+     *     target: non-empty-string,
      *     step_names: non-empty-string[]
      * }
      */
