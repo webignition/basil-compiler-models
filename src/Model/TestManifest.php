@@ -9,10 +9,10 @@ class TestManifest
     public const VALIDATION_STATE_VALID = 1;
     public const VALIDATION_STATE_SOURCE_EMPTY = 3;
     public const VALIDATION_STATE_TARGET_EMPTY = 4;
-    public const VALIDATION_STATE_URL_EMPTY = 6;
 
     /**
      * @param non-empty-string   $browser
+     * @param non-empty-string   $url
      * @param non-empty-string[] $stepNames
      */
     public function __construct(
@@ -42,6 +42,9 @@ class TestManifest
         return $this->browser;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getUrl(): string
     {
         return $this->url;
@@ -57,10 +60,6 @@ class TestManifest
 
     public function validate(): int
     {
-        if ('' === trim($this->url)) {
-            return self::VALIDATION_STATE_URL_EMPTY;
-        }
-
         if ('' === trim($this->source)) {
             return self::VALIDATION_STATE_SOURCE_EMPTY;
         }
@@ -74,7 +73,7 @@ class TestManifest
 
     /**
      * @return array{
-     *     config: array{browser: non-empty-string, url: string},
+     *     config: array{browser: non-empty-string, url: non-empty-string},
      *     source: string,
      *     target: string,
      *     step_names: non-empty-string[]

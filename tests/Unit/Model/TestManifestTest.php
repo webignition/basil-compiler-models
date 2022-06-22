@@ -38,14 +38,13 @@ class TestManifestTest extends TestCase
         self::assertSame($browser, $manifest->getBrowser());
     }
 
-    /**
-     * @dataProvider valueDataProvider
-     */
-    public function testGetUrl(string $value): void
+    public function testGetUrl(): void
     {
-        $manifest = new TestManifest('browser', $value, 'source', 'target', []);
+        $url = md5((string) rand());
 
-        self::assertSame($value, $manifest->getUrl());
+        $manifest = new TestManifest('browser', $url, 'source', 'target', []);
+
+        self::assertSame($url, $manifest->getUrl());
     }
 
     /**
@@ -127,16 +126,6 @@ class TestManifestTest extends TestCase
         $validStepNames = ['step one'];
 
         return [
-            'url invalid' => [
-                'testManifest' => new TestManifest(
-                    md5((string) rand()),
-                    '',
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    $validStepNames
-                ),
-                'expectedValidationState' => TestManifest::VALIDATION_STATE_URL_EMPTY,
-            ],
             'source empty' => [
                 'testManifest' => new TestManifest(
                     md5((string) rand()),
