@@ -64,11 +64,6 @@ class TestManifest
         return $this->stepNames;
     }
 
-    public function validate(): int
-    {
-        return self::VALIDATION_STATE_VALID;
-    }
-
     /**
      * @return array{
      *     config: array{browser: non-empty-string, url: non-empty-string},
