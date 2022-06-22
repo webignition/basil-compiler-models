@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilerModels\Tests\Unit;
+namespace webignition\BasilCompilerModels\Tests\Unit\Model;
 
 use Mockery;
 use phpmock\mockery\PHPMockery;
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilerModels\Configuration;
-use webignition\BasilCompilerModels\ConfigurationInterface;
+use webignition\BasilCompilerModels\Model\Configuration;
+use webignition\BasilCompilerModels\Model\ConfigurationInterface;
 
 class ConfigurationTest extends TestCase
 {
@@ -94,7 +94,7 @@ class ConfigurationTest extends TestCase
      */
     public function isValidDataProvider(): array
     {
-        $mockNamespace = 'webignition\BasilCompilerModels';
+        $mockNamespace = 'webignition\BasilCompilerModels\Model';
 
         $isReadableMockArguments = [
             $mockNamespace,

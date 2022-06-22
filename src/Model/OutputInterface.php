@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilerModels;
+namespace webignition\BasilCompilerModels\Model;
 
 interface OutputInterface
 {

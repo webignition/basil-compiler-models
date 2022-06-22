@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilerModels\Tests\Unit;
+namespace webignition\BasilCompilerModels\Tests\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilerModels\ErrorOutput;
-use webignition\BasilCompilerModels\ErrorOutputInterface;
+use webignition\BasilCompilerModels\Model\ErrorOutput;
+use webignition\BasilCompilerModels\Model\ErrorOutputInterface;
 
 class ErrorOutputTest extends TestCase
 {
