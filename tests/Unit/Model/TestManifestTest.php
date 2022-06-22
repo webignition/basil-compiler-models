@@ -18,14 +18,13 @@ class TestManifestTest extends TestCase
         self::assertSame($source, $manifest->getSource());
     }
 
-    /**
-     * @dataProvider valueDataProvider
-     */
-    public function testGetTarget(string $value): void
+    public function testGetTarget(): void
     {
-        $manifest = new TestManifest('browser', 'url', 'source', $value, []);
+        $target = md5((string) rand());
 
-        self::assertSame($value, $manifest->getTarget());
+        $manifest = new TestManifest('browser', 'url', 'source', $target, []);
+
+        self::assertSame($target, $manifest->getTarget());
     }
 
     public function testGetBrowser(): void
@@ -44,21 +43,6 @@ class TestManifestTest extends TestCase
         $manifest = new TestManifest('browser', $url, 'source', 'target', []);
 
         self::assertSame($url, $manifest->getUrl());
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function valueDataProvider(): array
-    {
-        return [
-            'empty' => [
-                'value' => '',
-            ],
-            'non-empty' => [
-                'value' => md5((string) rand()),
-            ],
-        ];
     }
 
     public function testGetStepNames(): void
@@ -122,26 +106,14 @@ class TestManifestTest extends TestCase
      */
     public function validateDataProvider(): array
     {
-        $validStepNames = ['step one'];
-
         return [
-            'target empty' => [
-                'testManifest' => new TestManifest(
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    '',
-                    $validStepNames
-                ),
-                'expectedValidationState' => TestManifest::VALIDATION_STATE_TARGET_EMPTY,
-            ],
             'valid' => [
                 'testManifest' => new TestManifest(
                     md5((string) rand()),
                     md5((string) rand()),
                     md5((string) rand()),
                     md5((string) rand()),
-                    $validStepNames
+                    ['step one']
                 ),
                 'expectedValidationState' => TestManifest::VALIDATION_STATE_VALID,
             ],

@@ -174,18 +174,6 @@ class TestManifestFactoryTest extends TestCase
         $stepName3 = md5((string) rand());
 
         return [
-            'target is not a string' => [
-                'data' => [
-                    'config' => [
-                        'browser' => $browser,
-                        'url' => $url
-                    ],
-                    'source' => $source,
-                    'target' => M_PI,
-                    'step_names' => [$stepName1],
-                ],
-                'expected' => new TestManifest($browser, $url, $source, '', [$stepName1]),
-            ],
             'step names are all not strings' => [
                 'data' => [
                     'config' => [
