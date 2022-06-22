@@ -36,21 +36,4 @@ class ErrorOutput implements ErrorOutputInterface
 
         return $data;
     }
-
-    /**
-     * @param array<mixed> $data
-     */
-    public static function fromArray(array $data): ErrorOutput
-    {
-        $message = $data['message'] ?? '';
-        $message = is_string($message) ? $message : '';
-
-        $code = $data['code'] ?? self::CODE_UNKNOWN;
-        $code = is_int($code) ? $code : self::CODE_UNKNOWN;
-
-        $context = $data['context'] ?? [];
-        $context = is_array($context) ? $context : [];
-
-        return new ErrorOutput($message, $code, $context);
-    }
 }
