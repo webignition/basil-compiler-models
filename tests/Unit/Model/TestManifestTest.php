@@ -9,14 +9,13 @@ use webignition\BasilCompilerModels\Model\TestManifest;
 
 class TestManifestTest extends TestCase
 {
-    /**
-     * @dataProvider valueDataProvider
-     */
-    public function testGetSource(string $value): void
+    public function testGetSource(): void
     {
-        $manifest = new TestManifest('browser', 'url', $value, 'target', []);
+        $source = md5((string) rand());
 
-        self::assertSame($value, $manifest->getSource());
+        $manifest = new TestManifest('browser', 'url', $source, 'target', []);
+
+        self::assertSame($source, $manifest->getSource());
     }
 
     /**
@@ -126,16 +125,6 @@ class TestManifestTest extends TestCase
         $validStepNames = ['step one'];
 
         return [
-            'source empty' => [
-                'testManifest' => new TestManifest(
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    '',
-                    md5((string) rand()),
-                    $validStepNames
-                ),
-                'expectedValidationState' => TestManifest::VALIDATION_STATE_SOURCE_EMPTY,
-            ],
             'target empty' => [
                 'testManifest' => new TestManifest(
                     md5((string) rand()),
