@@ -41,33 +41,60 @@ class ConfigurationTest extends TestCase
     }
 
     /**
-     * @dataProvider toArrayFromArrayDataProvider
+     * @param array<mixed> $expected
+     *
+     * @dataProvider toArrayDataProvider
      */
-    public function testToArrayFromArray(Configuration $configuration): void
+    public function testToArray(Configuration $configuration, array $expected): void
     {
-        self::assertEquals($configuration, Configuration::fromArray($configuration->toArray()));
+        self::assertEquals($expected, $configuration->toArray());
     }
 
     /**
      * @return array<mixed>
      */
-    public function toArrayFromArrayDataProvider(): array
+    public function toArrayDataProvider(): array
     {
         return [
             'empty' => [
-                'configuration' => new Configuration('', '', '')
+                'configuration' => new Configuration('', '', ''),
+                'expected' => [
+                    'source' => '',
+                    'target' => '',
+                    'base-class' => '',
+                ],
             ],
             'source only' => [
-                'configuration' => new Configuration(self::SOURCE, '', '')
+                'configuration' => new Configuration(self::SOURCE, '', ''),
+                'expected' => [
+                    'source' => self::SOURCE,
+                    'target' => '',
+                    'base-class' => '',
+                ],
             ],
             'target only' => [
-                'configuration' => new Configuration('', self::TARGET, '')
+                'configuration' => new Configuration('', self::TARGET, ''),
+                'expected' => [
+                    'source' => '',
+                    'target' => self::TARGET,
+                    'base-class' => '',
+                ],
             ],
             'base-class only' => [
-                'configuration' => new Configuration('', '', self::BASE_CLASS)
+                'configuration' => new Configuration('', '', self::BASE_CLASS),
+                'expected' => [
+                    'source' => '',
+                    'target' => '',
+                    'base-class' => self::BASE_CLASS,
+                ],
             ],
             'populated' => [
-                'configuration' => new Configuration(self::SOURCE, self::TARGET, self::BASE_CLASS)
+                'configuration' => new Configuration(self::SOURCE, self::TARGET, self::BASE_CLASS),
+                'expected' => [
+                    'source' => self::SOURCE,
+                    'target' => self::TARGET,
+                    'base-class' => self::BASE_CLASS,
+                ],
             ],
         ];
     }

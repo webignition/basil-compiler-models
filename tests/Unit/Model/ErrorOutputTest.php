@@ -18,17 +18,19 @@ class ErrorOutputTest extends TestCase
     }
 
     /**
-     * @dataProvider toArrayFromArrayDataProvider
+     * @param array<mixed> $expected
+     *
+     * @dataProvider toArrayDataProvider
      */
-    public function testToArrayFromArray(ErrorOutputInterface $output): void
+    public function testToArray(ErrorOutputInterface $output, array $expected): void
     {
-        self::assertEquals($output, ErrorOutput::fromArray($output->toArray()));
+        self::assertEquals($expected, $output->toArray());
     }
 
     /**
      * @return array<mixed>
      */
-    public function toArrayFromArrayDataProvider(): array
+    public function toArrayDataProvider(): array
     {
         return [
             'without context' => [
@@ -36,16 +38,28 @@ class ErrorOutputTest extends TestCase
                     'error-message-01',
                     1
                 ),
+                'expected' => [
+                    'message' => 'error-message-01',
+                    'code' => 1
+                ],
             ],
             'with context' => [
                 'output' => new ErrorOutput(
-                    'error-message-01',
-                    1,
+                    'error-message-02',
+                    2,
                     [
                         'context-key-01' => 'context-value-01',
                         'context-key-02' => 'context-value-02',
                     ]
                 ),
+                'expected' => [
+                    'message' => 'error-message-02',
+                    'code' => 2,
+                    'context' => [
+                        'context-key-01' => 'context-value-01',
+                        'context-key-02' => 'context-value-02',
+                    ],
+                ],
             ],
         ];
     }

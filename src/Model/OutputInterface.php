@@ -10,9 +10,4 @@ interface OutputInterface
      * @return array<mixed>
      */
     public function toArray(): array;
-
-    /**
-     * @param array<mixed> $data
-     */
-    public static function fromArray(array $data): self;
 }
