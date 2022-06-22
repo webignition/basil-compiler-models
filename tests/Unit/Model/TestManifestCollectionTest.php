@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilerModels\Tests\Unit;
+namespace webignition\BasilCompilerModels\Tests\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilerModels\TestManifest;
-use webignition\BasilCompilerModels\TestManifestCollection;
+use webignition\BasilCompilerModels\Model\TestManifest;
+use webignition\BasilCompilerModels\Model\TestManifestCollection;
 
 class TestManifestCollectionTest extends TestCase
 {
@@ -57,11 +57,13 @@ class TestManifestCollectionTest extends TestCase
     }
 
     /**
+     * @param array<mixed> $expected
+     *
      * @dataProvider toArrayFromArrayDataProvider
      */
-    public function testToArrayFromArray(TestManifestCollection $collection): void
+    public function testToArray(TestManifestCollection $collection, array $expected): void
     {
-        self::assertEquals($collection, TestManifestCollection::fromArray($collection->toArray()));
+        self::assertEquals($expected, $collection->toArray());
     }
 
     /**
@@ -69,34 +71,49 @@ class TestManifestCollectionTest extends TestCase
      */
     public function toArrayFromArrayDataProvider(): array
     {
+        $manifest1 = new TestManifest(
+            md5((string) rand()),
+            md5((string) rand()),
+            md5((string) rand()),
+            md5((string) rand()),
+            [md5((string) rand())]
+        );
+
+        $manifest2 = new TestManifest(
+            md5((string) rand()),
+            md5((string) rand()),
+            md5((string) rand()),
+            md5((string) rand()),
+            [md5((string) rand()), md5((string) rand())]
+        );
+
         return [
             'empty' => [
                 'collection' => new TestManifestCollection([]),
+                'expected' => [],
             ],
             'non-empty' => [
-                'collection' => new TestManifestCollection([
-                    new TestManifest(
-                        md5((string) rand()),
-                        md5((string) rand()),
-                        md5((string) rand()),
-                        md5((string) rand()),
-                        [md5((string) rand())]
-                    ),
-                    new TestManifest(
-                        md5((string) rand()),
-                        md5((string) rand()),
-                        md5((string) rand()),
-                        md5((string) rand()),
-                        [md5((string) rand()), md5((string) rand())]
-                    ),
-                    new TestManifest(
-                        md5((string) rand()),
-                        md5((string) rand()),
-                        md5((string) rand()),
-                        md5((string) rand()),
-                        [md5((string) rand())]
-                    )
-                ]),
+                'collection' => new TestManifestCollection([$manifest1, $manifest2]),
+                'expected' => [
+                    [
+                        'config' => [
+                            'browser' => $manifest1->getBrowser(),
+                            'url' => $manifest1->getUrl(),
+                        ],
+                        'source' => $manifest1->getSource(),
+                        'target' => $manifest1->getTarget(),
+                        'step_names' => $manifest1->getStepNames(),
+                    ],
+                    [
+                        'config' => [
+                            'browser' => $manifest2->getBrowser(),
+                            'url' => $manifest2->getUrl(),
+                        ],
+                        'source' => $manifest2->getSource(),
+                        'target' => $manifest2->getTarget(),
+                        'step_names' => $manifest2->getStepNames(),
+                    ],
+                ],
             ],
         ];
     }

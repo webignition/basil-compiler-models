@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilerModels;
+namespace webignition\BasilCompilerModels\Model;
 
 class TestManifestCollection implements OutputInterface
 {
@@ -40,22 +40,5 @@ class TestManifestCollection implements OutputInterface
         }
 
         return $data;
-    }
-
-    public static function fromArray(array $data): TestManifestCollection
-    {
-        $testManifests = [];
-
-        foreach ($data as $value) {
-            if (is_array($value)) {
-                $testManifest = TestManifest::fromArray($value);
-
-                if (TestManifest::VALIDATION_STATE_VALID === $testManifest->validate()) {
-                    $testManifests[] = $testManifest;
-                }
-            }
-        }
-
-        return new TestManifestCollection($testManifests);
     }
 }

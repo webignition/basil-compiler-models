@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilerModels;
+namespace webignition\BasilCompilerModels\Model;
 
 interface ConfigurationInterface
 {
@@ -18,9 +18,4 @@ interface ConfigurationInterface
      * @return array{source:string, target:string, base-class:string}
      */
     public function toArray(): array;
-
-    /**
-     * @param array<mixed> $data
-     */
-    public static function fromArray(array $data): self;
 }

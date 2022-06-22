@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilerModels;
+namespace webignition\BasilCompilerModels\Model;
 
 class Configuration implements ConfigurationInterface
 {
@@ -79,22 +79,5 @@ class Configuration implements ConfigurationInterface
             'target' => $this->target,
             'base-class' => $this->baseClass,
         ];
-    }
-
-    /**
-     * @param array<mixed> $data
-     */
-    public static function fromArray(array $data): self
-    {
-        $source = $data['source'] ?? '';
-        $source = is_string($source) ? $source : '';
-
-        $target = $data['target'] ?? '';
-        $target = is_string($target) ? $target : '';
-
-        $baseClass = $data['base-class'] ?? '';
-        $baseClass = is_string($baseClass) ? $baseClass : '';
-
-        return new Configuration($source, $target, $baseClass);
     }
 }

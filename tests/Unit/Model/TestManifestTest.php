@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilerModels\Tests\Unit;
+namespace webignition\BasilCompilerModels\Tests\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilerModels\TestManifest;
+use webignition\BasilCompilerModels\Model\TestManifest;
 
 class TestManifestTest extends TestCase
 {
@@ -64,11 +64,13 @@ class TestManifestTest extends TestCase
     }
 
     /**
+     * @param array<mixed> $expected
+     *
      * @dataProvider toArrayFromArrayDataProvider
      */
-    public function testToArrayFromArray(TestManifest $manifest): void
+    public function testToArray(TestManifest $manifest, array $expected): void
     {
-        self::assertEquals($manifest, TestManifest::fromArray($manifest->toArray()));
+        self::assertEquals($expected, $manifest->toArray());
     }
 
     /**
@@ -76,18 +78,38 @@ class TestManifestTest extends TestCase
      */
     public function toArrayFromArrayDataProvider(): array
     {
+        $nonEmptyManifest = new TestManifest(
+            md5((string) rand()),
+            md5((string) rand()),
+            md5((string) rand()),
+            md5((string) rand()),
+            []
+        );
+
         return [
             'empty' => [
                 'manifest' => new TestManifest('', '', '', '', []),
+                'expected' => [
+                    'config' => [
+                        'browser' => '',
+                        'url' => '',
+                    ],
+                    'source' => '',
+                    'target' => '',
+                    'step_names' => [],
+                ],
             ],
             'non-empty' => [
-                'manifest' => new TestManifest(
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    []
-                ),
+                'manifest' => $nonEmptyManifest,
+                'expected' => [
+                    'config' => [
+                        'browser' => $nonEmptyManifest->getBrowser(),
+                        'url' => $nonEmptyManifest->getUrl(),
+                    ],
+                    'source' => $nonEmptyManifest->getSource(),
+                    'target' => $nonEmptyManifest->getTarget(),
+                    'step_names' => $nonEmptyManifest->getStepNames(),
+                ]
             ],
         ];
     }
