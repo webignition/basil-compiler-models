@@ -13,6 +13,7 @@ class TestManifest
     /**
      * @param non-empty-string   $browser
      * @param non-empty-string   $url
+     * @param non-empty-string   $source
      * @param non-empty-string[] $stepNames
      */
     public function __construct(
@@ -24,6 +25,9 @@ class TestManifest
     ) {
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getSource(): string
     {
         return $this->source;
@@ -60,10 +64,6 @@ class TestManifest
 
     public function validate(): int
     {
-        if ('' === trim($this->source)) {
-            return self::VALIDATION_STATE_SOURCE_EMPTY;
-        }
-
         if ('' === trim($this->target)) {
             return self::VALIDATION_STATE_TARGET_EMPTY;
         }
@@ -74,7 +74,7 @@ class TestManifest
     /**
      * @return array{
      *     config: array{browser: non-empty-string, url: non-empty-string},
-     *     source: string,
+     *     source: non-empty-string,
      *     target: string,
      *     step_names: non-empty-string[]
      * }

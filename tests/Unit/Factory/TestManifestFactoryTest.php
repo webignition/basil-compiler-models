@@ -14,6 +14,7 @@ class TestManifestFactoryTest extends TestCase
     /**
      * @dataProvider invalidConfigBrowserDataProvider
      * @dataProvider invalidConfigUrlDataProvider
+     * @dataProvider invalidSourceDataProvider
      *
      * @param array<mixed> $data
      */
@@ -120,6 +121,36 @@ class TestManifestFactoryTest extends TestCase
     }
 
     /**
+     * @return array<mixed>
+     */
+    public function invalidSourceDataProvider(): array
+    {
+        $data = [
+            'config' => [
+                'browser' => md5((string) rand()),
+                'url' => md5((string) rand()),
+            ],
+            'target' => md5((string) rand()),
+            'step_names' => [md5((string) rand())],
+        ];
+
+        return [
+            'source missing' => [
+                'data' => $data,
+                'expected' => InvalidTestManifestException::createForEmptySource(),
+            ],
+            'source empty' => [
+                'data' => array_merge(['source' => ''], $data),
+                'expected' => InvalidTestManifestException::createForEmptySource(),
+            ],
+            'source whitespace-only' => [
+                'data' => array_merge(['source' => '  '], $data),
+                'expected' => InvalidTestManifestException::createForEmptySource(),
+            ],
+        ];
+    }
+
+    /**
      * @param array<mixed> $data
      *
      * @dataProvider createDataProvider
@@ -143,18 +174,6 @@ class TestManifestFactoryTest extends TestCase
         $stepName3 = md5((string) rand());
 
         return [
-            'source is not a string' => [
-                'data' => [
-                    'config' => [
-                        'browser' => $browser,
-                        'url' => $url
-                    ],
-                    'source' => 100,
-                    'target' => $target,
-                    'step_names' => [$stepName1],
-                ],
-                'expected' => new TestManifest($browser, $url, '', $target, [$stepName1]),
-            ],
             'target is not a string' => [
                 'data' => [
                     'config' => [

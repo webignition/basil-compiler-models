@@ -32,7 +32,10 @@ class TestManifestFactory
         }
 
         $source = $data['source'] ?? '';
-        $source = is_string($source) ? $source : '';
+        $source = is_string($source) ? trim($source) : '';
+        if ('' === $source) {
+            throw InvalidTestManifestException::createForEmptySource();
+        }
 
         $target = $data['target'] ?? '';
         $target = is_string($target) ? $target : '';
@@ -47,12 +50,6 @@ class TestManifestFactory
             }
         }
 
-        return new TestManifest(
-            $browser,
-            $configData['url'] ?? '',
-            $source,
-            $target,
-            $filteredStepNames
-        );
+        return new TestManifest($browser, $url, $source, $target, $filteredStepNames);
     }
 }

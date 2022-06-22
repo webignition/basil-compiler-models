@@ -36,29 +36,6 @@ class TestManifestCollectionFactoryTest extends TestCase
                 'data' => [],
                 'collection' => new TestManifestCollection([]),
             ],
-            'only invalid data sets' => [
-                'data' => [
-                    [
-                        'config' => [
-                            'browser' => 'chrome',
-                            'url' => 'http://example.com/1',
-                        ],
-                        'source' => '',
-                        'target' => 'target1',
-                        'step_names' => ['1', '2'],
-                    ],
-                    [
-                        'config' => [
-                            'browser' => 'firefox',
-                            'url' => 'http://example.com/2',
-                        ],
-                        'source' => 'source2',
-                        'target' => '',
-                        'step_names' => ['3', '4'],
-                    ],
-                ],
-                'collection' => new TestManifestCollection([]),
-            ],
             'valid data sets' => [
                 'data' => [
                     [
