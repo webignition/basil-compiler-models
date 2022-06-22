@@ -18,9 +18,4 @@ interface ConfigurationInterface
      * @return array{source:string, target:string, base-class:string}
      */
     public function toArray(): array;
-
-    /**
-     * @param array<mixed> $data
-     */
-    public static function fromArray(array $data): self;
 }

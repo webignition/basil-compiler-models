@@ -80,21 +80,4 @@ class Configuration implements ConfigurationInterface
             'base-class' => $this->baseClass,
         ];
     }
-
-    /**
-     * @param array<mixed> $data
-     */
-    public static function fromArray(array $data): self
-    {
-        $source = $data['source'] ?? '';
-        $source = is_string($source) ? $source : '';
-
-        $target = $data['target'] ?? '';
-        $target = is_string($target) ? $target : '';
-
-        $baseClass = $data['base-class'] ?? '';
-        $baseClass = is_string($baseClass) ? $baseClass : '';
-
-        return new Configuration($source, $target, $baseClass);
-    }
 }
