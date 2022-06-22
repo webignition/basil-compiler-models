@@ -36,14 +36,6 @@ class TestManifestCollectionFactoryTest extends TestCase
                 'data' => [],
                 'collection' => new TestManifestCollection([]),
             ],
-            'empty data sets' => [
-                'data' => [
-                    [],
-                    [],
-                    [],
-                ],
-                'collection' => new TestManifestCollection([]),
-            ],
             'only invalid data sets' => [
                 'data' => [
                     [

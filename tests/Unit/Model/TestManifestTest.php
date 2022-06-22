@@ -14,7 +14,9 @@ class TestManifestTest extends TestCase
      */
     public function testGetSource(string $value): void
     {
-        self::assertSame($value, (new TestManifest('', '', $value, '', []))->getSource());
+        $manifest = new TestManifest('browser', 'url', $value, 'target', []);
+
+        self::assertSame($value, $manifest->getSource());
     }
 
     /**
@@ -22,15 +24,18 @@ class TestManifestTest extends TestCase
      */
     public function testGetTarget(string $value): void
     {
-        self::assertSame($value, (new TestManifest('', '', '', $value, []))->getTarget());
+        $manifest = new TestManifest('browser', 'url', 'source', $value, []);
+
+        self::assertSame($value, $manifest->getTarget());
     }
 
-    /**
-     * @dataProvider valueDataProvider
-     */
-    public function testGetBrowser(string $value): void
+    public function testGetBrowser(): void
     {
-        self::assertSame($value, (new TestManifest($value, '', '', '', []))->getBrowser());
+        $browser = md5((string) rand());
+
+        $manifest = new TestManifest($browser, 'url', 'source', 'target', []);
+
+        self::assertSame($browser, $manifest->getBrowser());
     }
 
     /**
@@ -38,7 +43,9 @@ class TestManifestTest extends TestCase
      */
     public function testGetUrl(string $value): void
     {
-        self::assertSame($value, (new TestManifest('', $value, '', '', []))->getUrl());
+        $manifest = new TestManifest('browser', $value, 'source', 'target', []);
+
+        self::assertSame($value, $manifest->getUrl());
     }
 
     /**
@@ -60,7 +67,9 @@ class TestManifestTest extends TestCase
     {
         $stepNames = ['step one', 'step two', 'step three'];
 
-        self::assertSame($stepNames, (new TestManifest('', '', '', '', $stepNames))->getStepNames());
+        $manifest = new TestManifest('browser', 'url', 'source', 'target', $stepNames);
+
+        self::assertSame($stepNames, $manifest->getStepNames());
     }
 
     /**
@@ -87,18 +96,6 @@ class TestManifestTest extends TestCase
         );
 
         return [
-            'empty' => [
-                'manifest' => new TestManifest('', '', '', '', []),
-                'expected' => [
-                    'config' => [
-                        'browser' => '',
-                        'url' => '',
-                    ],
-                    'source' => '',
-                    'target' => '',
-                    'step_names' => [],
-                ],
-            ],
             'non-empty' => [
                 'manifest' => $nonEmptyManifest,
                 'expected' => [
@@ -130,16 +127,6 @@ class TestManifestTest extends TestCase
         $validStepNames = ['step one'];
 
         return [
-            'browser invalid' => [
-                'testManifest' => new TestManifest(
-                    '',
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    $validStepNames
-                ),
-                'expectedValidationState' => TestManifest::VALIDATION_STATE_BROWSER_EMPTY,
-            ],
             'url invalid' => [
                 'testManifest' => new TestManifest(
                     md5((string) rand()),
