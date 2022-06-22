@@ -25,6 +25,12 @@ class TestManifestFactory
             throw InvalidTestManifestException::createForEmptyBrowser();
         }
 
+        $url = $configData['url'] ?? '';
+        $url = is_string($url) ? trim($url) : '';
+        if ('' === $url) {
+            throw InvalidTestManifestException::createForEmptyUrl();
+        }
+
         $source = $data['source'] ?? '';
         $source = is_string($source) ? $source : '';
 

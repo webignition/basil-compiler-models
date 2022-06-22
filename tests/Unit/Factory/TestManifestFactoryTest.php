@@ -13,6 +13,7 @@ class TestManifestFactoryTest extends TestCase
 {
     /**
      * @dataProvider invalidConfigBrowserDataProvider
+     * @dataProvider invalidConfigUrlDataProvider
      *
      * @param array<mixed> $data
      */
@@ -68,6 +69,52 @@ class TestManifestFactoryTest extends TestCase
                     $data
                 ),
                 'expected' => InvalidTestManifestException::createForEmptyBrowser(),
+            ],
+        ];
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function invalidConfigUrlDataProvider(): array
+    {
+        $configData = [
+            'browser' => md5((string) rand())
+        ];
+
+        $data = [
+            'source' => md5((string) rand()),
+            'target' => md5((string) rand()),
+            'step_names' => [md5((string) rand())],
+        ];
+
+        return [
+            'config.url missing' => [
+                'data' => array_merge(
+                    [
+                        'config' => $configData,
+                    ],
+                    $data
+                ),
+                'expected' => InvalidTestManifestException::createForEmptyUrl(),
+            ],
+            'config.url empty' => [
+                'data' => array_merge(
+                    [
+                        'config' => array_merge(['url' => ''], $configData),
+                    ],
+                    $data
+                ),
+                'expected' => InvalidTestManifestException::createForEmptyUrl(),
+            ],
+            'config.url whitespace-only' => [
+                'data' => array_merge(
+                    [
+                        'config' => array_merge(['url' => '  '], $configData),
+                    ],
+                    $data
+                ),
+                'expected' => InvalidTestManifestException::createForEmptyUrl(),
             ],
         ];
     }
