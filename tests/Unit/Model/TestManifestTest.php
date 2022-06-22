@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilerModels\Tests\Unit;
+namespace webignition\BasilCompilerModels\Tests\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilerModels\TestManifest;
+use webignition\BasilCompilerModels\Model\TestManifest;
 
 class TestManifestTest extends TestCase
 {
