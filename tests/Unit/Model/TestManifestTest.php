@@ -9,58 +9,49 @@ use webignition\BasilCompilerModels\Model\TestManifest;
 
 class TestManifestTest extends TestCase
 {
-    /**
-     * @dataProvider valueDataProvider
-     */
-    public function testGetSource(string $value): void
+    public function testGetSource(): void
     {
-        self::assertSame($value, (new TestManifest('', '', $value, '', []))->getSource());
+        $source = md5((string) rand());
+
+        $manifest = new TestManifest('browser', 'url', $source, 'target', []);
+
+        self::assertSame($source, $manifest->getSource());
     }
 
-    /**
-     * @dataProvider valueDataProvider
-     */
-    public function testGetTarget(string $value): void
+    public function testGetTarget(): void
     {
-        self::assertSame($value, (new TestManifest('', '', '', $value, []))->getTarget());
+        $target = md5((string) rand());
+
+        $manifest = new TestManifest('browser', 'url', 'source', $target, []);
+
+        self::assertSame($target, $manifest->getTarget());
     }
 
-    /**
-     * @dataProvider valueDataProvider
-     */
-    public function testGetBrowser(string $value): void
+    public function testGetBrowser(): void
     {
-        self::assertSame($value, (new TestManifest($value, '', '', '', []))->getBrowser());
+        $browser = md5((string) rand());
+
+        $manifest = new TestManifest($browser, 'url', 'source', 'target', []);
+
+        self::assertSame($browser, $manifest->getBrowser());
     }
 
-    /**
-     * @dataProvider valueDataProvider
-     */
-    public function testGetUrl(string $value): void
+    public function testGetUrl(): void
     {
-        self::assertSame($value, (new TestManifest('', $value, '', '', []))->getUrl());
-    }
+        $url = md5((string) rand());
 
-    /**
-     * @return array<mixed>
-     */
-    public function valueDataProvider(): array
-    {
-        return [
-            'empty' => [
-                'value' => '',
-            ],
-            'non-empty' => [
-                'value' => md5((string) rand()),
-            ],
-        ];
+        $manifest = new TestManifest('browser', $url, 'source', 'target', []);
+
+        self::assertSame($url, $manifest->getUrl());
     }
 
     public function testGetStepNames(): void
     {
         $stepNames = ['step one', 'step two', 'step three'];
 
-        self::assertSame($stepNames, (new TestManifest('', '', '', '', $stepNames))->getStepNames());
+        $manifest = new TestManifest('browser', 'url', 'source', 'target', $stepNames);
+
+        self::assertSame($stepNames, $manifest->getStepNames());
     }
 
     /**
@@ -87,18 +78,6 @@ class TestManifestTest extends TestCase
         );
 
         return [
-            'empty' => [
-                'manifest' => new TestManifest('', '', '', '', []),
-                'expected' => [
-                    'config' => [
-                        'browser' => '',
-                        'url' => '',
-                    ],
-                    'source' => '',
-                    'target' => '',
-                    'step_names' => [],
-                ],
-            ],
             'non-empty' => [
                 'manifest' => $nonEmptyManifest,
                 'expected' => [
@@ -127,56 +106,14 @@ class TestManifestTest extends TestCase
      */
     public function validateDataProvider(): array
     {
-        $validStepNames = ['step one'];
-
         return [
-            'browser invalid' => [
-                'testManifest' => new TestManifest(
-                    '',
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    $validStepNames
-                ),
-                'expectedValidationState' => TestManifest::VALIDATION_STATE_BROWSER_EMPTY,
-            ],
-            'url invalid' => [
-                'testManifest' => new TestManifest(
-                    md5((string) rand()),
-                    '',
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    $validStepNames
-                ),
-                'expectedValidationState' => TestManifest::VALIDATION_STATE_URL_EMPTY,
-            ],
-            'source empty' => [
-                'testManifest' => new TestManifest(
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    '',
-                    md5((string) rand()),
-                    $validStepNames
-                ),
-                'expectedValidationState' => TestManifest::VALIDATION_STATE_SOURCE_EMPTY,
-            ],
-            'target empty' => [
-                'testManifest' => new TestManifest(
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    md5((string) rand()),
-                    '',
-                    $validStepNames
-                ),
-                'expectedValidationState' => TestManifest::VALIDATION_STATE_TARGET_EMPTY,
-            ],
             'valid' => [
                 'testManifest' => new TestManifest(
                     md5((string) rand()),
                     md5((string) rand()),
                     md5((string) rand()),
                     md5((string) rand()),
-                    $validStepNames
+                    ['step one']
                 ),
                 'expectedValidationState' => TestManifest::VALIDATION_STATE_VALID,
             ],
