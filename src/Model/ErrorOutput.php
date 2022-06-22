@@ -6,10 +6,9 @@ namespace webignition\BasilCompilerModels\Model;
 
 class ErrorOutput implements ErrorOutputInterface
 {
-    public const CODE_UNKNOWN = 99;
-
     /**
-     * @param array<mixed> $context
+     * @param non-empty-string $message
+     * @param array<mixed>     $context
      */
     public function __construct(
         private readonly string $message,
@@ -23,6 +22,9 @@ class ErrorOutput implements ErrorOutputInterface
         return $this->code;
     }
 
+    /**
+     * @return array{message: non-empty-string, code: int, context?: array<mixed>}
+     */
     public function toArray(): array
     {
         $data = [
