@@ -7,8 +7,7 @@ namespace webignition\BasilCompilerModels\Model;
 class ErrorOutput implements ErrorOutputInterface
 {
     /**
-     * @param non-empty-string $message
-     * @param array<mixed>     $context
+     * @param array<mixed> $context
      */
     public function __construct(
         private readonly string $message,
@@ -23,7 +22,7 @@ class ErrorOutput implements ErrorOutputInterface
     }
 
     /**
-     * @return array{message: non-empty-string, code: int, context?: array<mixed>}
+     * @return array{message: string, code: int, context?: array<mixed>}
      */
     public function toArray(): array
     {
