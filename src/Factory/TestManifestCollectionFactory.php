@@ -10,7 +10,7 @@ use webignition\BasilCompilerModels\Model\TestManifestCollection;
 class TestManifestCollectionFactory
 {
     public function __construct(
-        private readonly TestManifestFactory $testManifestFactory,
+        private readonly TestManifestFactoryInterface $testManifestFactory,
     ) {
     }
 

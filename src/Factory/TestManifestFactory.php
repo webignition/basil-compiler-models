@@ -7,7 +7,7 @@ namespace webignition\BasilCompilerModels\Factory;
 use webignition\BasilCompilerModels\Exception\InvalidTestManifestException;
 use webignition\BasilCompilerModels\Model\TestManifest;
 
-class TestManifestFactory
+class TestManifestFactory implements TestManifestFactoryInterface
 {
     /**
      * @param array<mixed> $data
